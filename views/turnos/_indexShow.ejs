@@ -1,39 +1,38 @@
-
 <%
 const monthArray = Object.values(i18n.turno.months);
 const formatDate = function (currentDate) {
-    if (i18n.lang === "es") { 
-        return `${currentDate.getDate()} de ${monthArray[currentDate.getMonth()]} de ${currentDate.getFullYear()}`;
-    } else {
-        let ord = "th"
-        switch(currentDate.getDate().toString()) {
-            case "1": case "21": case "31":
-                ord = "st"; break;
-            case "2": case "22":
-                ord = "nd"; break;
-            case "3": case "23":
-                ord = "rd"; break;
-            default: 
-                ord = "th";
-        }
-        return `${monthArray[currentDate.getMonth()]} ${currentDate.getDate()}${ord}, ${currentDate.getFullYear()}`;    
-    } 
+	if (i18n.lang === "es") {
+		return `${currentDate.getDate()} de ${monthArray[currentDate.getMonth()]} de ${currentDate.getFullYear()}`;
+	} else {
+		let ord = "th"
+		switch(currentDate.getDate().toString()) {
+		case "1": case "21": case "31":
+			ord = "st"; break;
+		case "2": case "22":
+			ord = "nd"; break;
+		case "3": case "23":
+			ord = "rd"; break;
+		default:
+			ord = "th";
+		}
+		return `${monthArray[currentDate.getMonth()]} ${currentDate.getDate()}${ord}, ${currentDate.getFullYear()}`;
+	}
 };
 var pastDates = [];
 %>
 <div>
-<% for (var i in turnos) { %>
-<% 	var turn = turnos[i];
-	var date = new Date(turn.date);
-	var dateNoTime = new Date(turn.date);
-	dateNoTime.setHours(0,0,0,0); %>
-<%	if (pastDates.indexOf(dateNoTime.getTime()) === -1) {
-  		pastDates.push(dateNoTime.getTime()); %>
-		</div>
-		<p class="turno-date-title-show centeredSmall">
-			<%= turn.date ? formatDate(dateNoTime) : i18n.turno.alwaysOpen %>
-		</p>
-		<div class="flexBoxTurnos">
+	<% for (var i in turnos) { %>
+		<% 	var turn = turnos[i];
+			var date = new Date(turn.date);
+			var dateNoTime = new Date(turn.date);
+			dateNoTime.setHours(0,0,0,0); %>
+		<%	if (pastDates.indexOf(dateNoTime.getTime()) === -1) {
+			pastDates.push(dateNoTime.getTime()); %>
+</div>
+<p class="turno-date-title-show centeredSmall">
+	<%= turn.date ? formatDate(dateNoTime) : i18n.turno.alwaysOpen %>
+</p>
+<div class="flexBoxTurnos">
 	<%}%>
 	<a href="" title="<%=i18n.turno.statusMsg[turn.status]%>" onclick="return false;">
 		<div class="turno turno-play turnoProfe <%=turn.status === "active" ? "active" : "finished" %>" data-date="<%=dateNoTime.getTime()%>" id="turno-<%=turn.id%>">
@@ -50,7 +49,7 @@ var pastDates = [];
 	<div id="dialog-turno-<%=turn.id%>" class="dialog-turno hidden" title="<%=i18n.turno.Turno%> <%= turn.date ? getFullDate(turn.date) : i18n.turno.alwaysOpen  %> <%if(turn.place){%>(<%=turn.place%>)<%}%>">
 		<div class="flex-dialog-container">
 			<div class="flex-block">
-				<button class="turno-btn" title="<%=i18n.turno[turn.status === "active"? "stop" : "start"]%>"  <%=turn.status === "finished" ? "disabled":`onclick="overlayTrigger('activate-'+turn.id)"`%>>
+				<button class="turno-btn" title="<%=i18n.turno[turn.status === "active"? "stop" : "start"]%>"  <%if (turn.status === "finished") {%>   disabled <% } else { %> onclick="overlayTrigger('activate-<%=turn.id%>')"` <% } %>>
 					<span class="material-icons"  style="color: var(--brightgreen);" ><%= turn.status === "active"? "stop" : "play_arrow"%></span>
 					<span><%=i18n.escapeRoom.play[turn.status === "active"? "stop" : "start"]%></span>
 				</button>
@@ -117,10 +116,10 @@ var pastDates = [];
 	<script>
 		$( function() {
 			$("#dialog-turno-<%=turn.id%>").dialog({...dialogOptions, height: "auto"});
-			$( "#turno-<%=turn.id%>" ).on( "click", function() {
+			$( "#turno-<%=turn.id%>:not(:disabled)" ).on( "click", function() {
 				$( "#dialog-turno-<%=turn.id%>" ).dialog( "open" );
 			});
 		});
 	</script>
-<%}%>
+	<%}%>
 </div>

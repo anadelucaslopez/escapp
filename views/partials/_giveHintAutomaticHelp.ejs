@@ -1,0 +1,29 @@
+<%if(escapeRoom.autHelpOptionsDuration === "giveNextHint") {%>
+<div class="modal" data-backdrop="static" tabindex="-1" role="dialog" id="hintHelp" aria-hidden="true">
+    <div class="modal-backdrop" style="opacity: 0.6; z-index:0;"></div>
+
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body" id="hintHelpContent" style="text-align: center;">
+                <p style="text-align: center;"><%=i18n.escapeRoom.play.giveHintAutomaticHelpText%></p>
+                <button class="btn btn-success" id="hintHelp-btn-accept"><%=i18n.common.accept%></button>
+                <button class="btn btn-danger" data-dismiss="modal" id="hintHelp-btn-cancel"><%=i18n.common.cancel%></button>
+            </div>
+        </div>
+    </div>
+</div>
+<%} else if (escapeRoom.autHelpOptionsDuration === "giveLastHint"){%>
+<div class="modal" data-backdrop="static" tabindex="-1" role="dialog" id="lastHintHelp" aria-hidden="true">
+    <div class="modal-backdrop" style="opacity: 0.6; z-index:0;"></div>
+
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body" id="lastHintHelpContent" style="text-align: center;">
+                <p style="text-align: center;"><%=i18n.escapeRoom.play.giveLastHintAutomaticHelpText%></p>
+                <button class="btn btn-success" id="lastHintHelp-btn-accept"><%=i18n.common.accept%></button>
+                <button class="btn btn-danger" data-dismiss="modal" id="lastHintHelp-btn-cancel"><%=i18n.common.cancel%></button>
+            </div>
+        </div>
+    </div>
+</div>
+<%}%>

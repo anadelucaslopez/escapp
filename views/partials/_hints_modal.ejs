@@ -5,13 +5,13 @@
           <h5 class="modal-title" id="modal-title">
             <%=i18n.escapeRoom.play.Info%>
           </h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close" id="close-hint-modal" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body" id="modalContent">
             <div class="hints-modal-no-left">
-            </div>  
+            </div>
             <div class="hints-modal-main-content">
                 <%if (hintConditional){%>
                 <h4 id="requested-hints-title" >
@@ -27,13 +27,13 @@
                     <% var isCurrent = currentlyWorkingOn === order;%>
 
                     <% var show = (pending.indexOf(order) === -1 || currentlyWorkingOn === order);%>
-                    <li class="card reto-hint-li reto-hint-title-<%=order%> <%=isCurrent ? 'reto-hint-current' : ''%>" 
-                        style="<%=(show) ? '':'display: none;'%>" 
+                    <li class="card reto-hint-li reto-hint-title-<%=order%> <%=isCurrent ? 'reto-hint-current' : ''%>"
+                        style="<%=(show) ? '':'display: none;'%>"
                         data-puzzle-number="<%=order%>">
 
                         <h6 class="reto-title">
-                            <span class="btn-hints-title btn-hints-modal-title" id="btn-hints-modal-tooltip-<%=order%>" data-toggle="tooltip" title="-">
-                                <button class="btn btn-success btn-hints btn-hints-modal" ><%=i18n.escapeRoom.play.need%></button>
+                            <span class="btn-hints-title btn-hints-modal-title btn-reqHint-Modal" id="btn-hints-modal-tooltip-<%=order%>" data-toggle="tooltip" title="-">
+                                <button class="btn btn-success btn-hints btn-hints-modal"><%=i18n.escapeRoom.play.need%></button>
                             </span>
                             <span class="current-pths"><b><%=i18n.puzzle.Puzzle%> <%=order+1%></b></span>
                             <span class="puzzle-title-no-current"><b><%=escapeRoom.puzzles[p].title%></b> </span>
@@ -48,12 +48,12 @@
                             var hint = escapeRoom.puzzles[p].hints[i];
                             if (nCats === 1) {
                                 categoryIndex = 0;
-                            } else if (nCats > 1 && category !== hint.category) { 
+                            } else if (nCats > 1 && category !== hint.category) {
                                 category =  hint.category || "General";
-                                categoryIndex++;    
+                                categoryIndex++;
                             %>
                         <% }%>
-                            <% if (hint && reqHintsList.indexOf(hint.id) !== -1) { %>                            
+                            <% if (hint && reqHintsList.indexOf(hint.id) !== -1) { %>
                                 <li class="reto-hint" data-hint-number="<%=hint.order%>">
                                     <div class="card border-info mb-3">
                                         <div class="card-body">
@@ -82,7 +82,7 @@
                 <% for (var p = 0; p < retosSuperados.length; p++) { %>
                     <% var puz = retosSuperados[p];%>
                     <% var found = escapeRoom.puzzles.find(r=>r.order === puz);%>
-                    <li class="card reto-puzzle-li <%=(p === (retosSuperados.length -1)) ? 'reto-puzzle-current':'' %>"> 
+                    <li class="card reto-puzzle-li <%=(p === (retosSuperados.length -1)) ? 'reto-puzzle-current':'' %>">
                         <h6><b><%=found.title%></b></h6>
                         <% if (found && found.correct ) {%>
                         <p> <b><%=i18n.escapeRoom.play.msg%>:</b> <%=found.correct%></p>
@@ -102,8 +102,8 @@
             <div class="hints-modal-cats">
             </div>
             <div class="hints-modal-quiz">
-            </div> 
-                     
+            </div>
+
         </div>
       </div>
     </div>

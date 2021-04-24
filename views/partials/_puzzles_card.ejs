@@ -36,6 +36,22 @@
             </select>
         </div>
     </div>
+    <div class="flex-puzzle-card">
+        <div>
+            <h3>
+                <span class="material-icons">timer</span>
+                <label for="puzzles[<%=reto%>][duration]"><%=i18n.escapeRoom.steps.puzzles.duration%></label>
+            </h3>
+            <input type="number" class="light" name="puzzles[<%=reto%>][duration]" min="0" max="24 * 60 * 60 * 365" value="<%=puzzle.duration%>" id="puzzles[<%=reto%>][duration]"/>
+        </div>
+        <div>
+            <h3>
+                <span class="material-icons">timer_off</span>
+                <label for="puzzles[<%=reto%>][maxDuration]"><%=i18n.escapeRoom.steps.puzzles.maxDuration%></label>
+            </h3>
+            <input type="number" class="light" name="puzzles[<%=reto%>][maxDuration]" min="0" max="24 * 60 * 60 * 365" value="<%=puzzle.maxDuration%>" id="puzzles[<%=reto%>][maxDuration]"/>
+        </div>
+    </div>
     <h3>
         <span class="material-icons">check</span>
         <label for="puzzles[<%=reto%>][correct]"><%=i18n.escapeRoom.steps.puzzles.successMsg%></label>
@@ -57,9 +73,9 @@
                 let hint = puzzle.hints[h];
                 if (nCats === 1) {
                     categoryIndex = 0;
-                } else if (nCats > 1 && category !== hint.category) { 
+                } else if (nCats > 1 && category !== hint.category) {
                     category =  hint.category || "General";
-                    categoryIndex++;    
+                    categoryIndex++;
                 %>
                 <li class="hint-category" data-id="<%=categoryIndex%>">
                     <span class="material-icons handle-cat">call_split</span>

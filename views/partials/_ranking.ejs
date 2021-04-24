@@ -23,7 +23,7 @@
 
     const sort = () => {
         // teams = teams.sort((a,b)=>{
-            
+
         //     if (a.puzzlesSolved.length > b.puzzlesSolved.length) {
         //         return -1;
         //     } else if (a.puzzlesSolved.length < b.puzzlesSolved.length) {
@@ -72,7 +72,7 @@
                 className += " won";
             }
 
-            teamViews += `<div class="ranking-row ${className}" id="team-${currentTeam.id}" 
+            teamViews += `<div class="ranking-row ${className}" id="team-${currentTeam.id}"
                     style="top: ${top}px">
                 <div class="ranking-pos"><span>${idx + 1}</span></div>
                 <div class="ranking-team"><b>${currentTeam.name}</b></div>
@@ -90,7 +90,7 @@
         let view = `<div class="ranking-table table" style="height: ${height}px;">
             <div class="ranking-row ranking-header table-primary" >
                 <div class="ranking-pos">#</div>
-                <div class="ranking-team"><%=i18n.analytics.ranking.team%></div>
+                 <div class="ranking-team"><%=(escapeRoom.teamSize == 1)?i18n.analytics.ranking.user:i18n.analytics.ranking.team%></div>
                 <div class="ranking-members"><%=i18n.analytics.ranking.members%></div>
                 <div class="ranking-res"><%=i18n.analytics.ranking.res%></div>
                 <div class="ranking-time"><%=i18n.analytics.ranking.time%></div>
@@ -101,7 +101,7 @@
     }
 
    var teams = JSON.parse("<%-JSON.stringify(teams).replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/\f/g, "\\f").replace(/"/g,"\\\"").replace(/'/g,"\\\'").replace(/\&/g, "\\&")%>");
-   
+
    $(()=>{
        $('ranking').html(rankingTemplate(teams, teamId));
        sort();
@@ -111,4 +111,3 @@
        }
    });
 </script>
-                    
