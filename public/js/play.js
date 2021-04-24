@@ -193,7 +193,7 @@ const onHintResponse = async ({code, hintOrder: hintOrderPlus, puzzleOrder: puzz
   const message = msg;
   const hintOrder = hintOrderPlus - 1;
   const puzzleOrder = puzzleOrderPlus - 1;
-  
+
   if (hintOrderPlus) { // Existing hint
     updateHint(puzzleOrder, hintOrder, category);
     const moreAvail = checkAvailHintsForPuzzle(puzzleOrder);
@@ -213,7 +213,7 @@ const onHintResponse = async ({code, hintOrder: hintOrderPlus, puzzleOrder: puzz
       }
       $('.reto-hint-title-'+puzzleOrder).first().removeClass('animated');
     }
-    
+
   } else if(ER.info.allowCustomHints) {
     if (code == "OK") { // Hint obtained
       updateHint(puzzleOrder, null, category);
@@ -234,9 +234,9 @@ const onHintResponse = async ({code, hintOrder: hintOrderPlus, puzzleOrder: puzz
           if (ER.info.hintAppConditional) {
             cleanHintModal();
           }
-        } 
+        }
         createAlert("warning", i18n.noMoreLeftTeam);
-        
+
       }
     } else { // Hint not obtained (only quiz strategy)
       if (ER.erState.waitingForHintReply) { // Receive a hint that you requested
@@ -252,7 +252,7 @@ const onHintResponse = async ({code, hintOrder: hintOrderPlus, puzzleOrder: puzz
   }
   ER.erState.waitingForHintReply = false; // Stop waiting for hint response
   $('html').css('cursor','auto');
-  
+
 };
 
 const onInitialInfo = ({code, erState, participation}) => {
@@ -286,6 +286,56 @@ const onLeave = ({username, teamId, ranking}) => {
     teams = ranking;
     $('ranking').html(rankingTemplate(teams, myTeamId));
     sort();
+  }
+}
+
+const onNeedHelp = ({helpStrategyDuration}) => {
+  const hintsAvailable = checkAvailHintsForPuzzle(ER.erState.currentlyWorkingOn);
+  switch (helpStrategyDuration) {
+  case "msg":
+    createAlert("warning", i18n.msgSlow, false);
+    break;
+  case "reqOneHint":
+    createAlert("warning", i18n.msgSlowReqHint, false);
+    break;
+  case "giveNextHint":
+    if (hintsAvailable){
+      $('#hintHelp').show({"backdrop": true});
+    }
+    break;
+  case "giveLastHint":
+    if (hintsAvailable) {
+      $('#lastHintHelp').show({"backdrop": true});
+    }
+    break;
+  case "none":
+  default:
+    break;
+  }
+}
+
+const onNeedHelpMax = ({helpStrategyMaxDuration}) => {
+  const hintsAvailable = checkAvailHintsForPuzzle(ER.erState.currentlyWorkingOn);
+  switch (helpStrategyMaxDuration) {
+  case "msg":
+    createAlert("danger", i18n.msgSlowMax, false);
+    break;
+  case "reqOneHint":
+    createAlert("danger", i18n.msgSlowReqHintMax, false);
+    break;
+  case "giveNextHint":
+    if (hintsAvailable){
+      $('#hintHelpMax').show({"backdrop": true});
+    }
+    break;
+  case "giveLastHint":
+      if (hintsAvailable) {
+      $('#lastHintHelpMax').show({"backdrop": true});
+    }
+    break;
+  case "none":
+  default:
+    break;
   }
 }
 
@@ -345,10 +395,10 @@ const hintReq = ()=>{
 
 const closeHintModal = async () => {
   // Close hint modal
-  $('#hintModal').addClass('zoomOut'); 
+  $('#hintModal').addClass('zoomOut');
   await forMs(300);
-  $('#hintModal').modal('hide'); 
-  
+  $('#hintModal').modal('hide');
+
 }
 
 const cleanHintModal = ()=> {
@@ -405,7 +455,7 @@ const updatePuzzle = (order, currentPuzzle, prevPuzzleOrder) => {
       // Update currentReto in modal
       $('.reto-hint-li').removeClass('reto-hint-current');
       $('.reto-hint-title-'+order).addClass('reto-hint-current');
-    
+
       if (currentPuzzle.automatic) {
         $('#puzzle-form').hide()
       } else {
@@ -452,7 +502,7 @@ const updateHint = (puzzleOrder, hintOrder, category) => {
 const updateSuperados = (puzzleOrder) => {
   ER.erState.retosSuperados.push(puzzleOrder)
   const pendingIndex = ER.erState.pending.indexOf(puzzleOrder);
-  if (pendingIndex !== -1 ) {ER.erState.pending.splice(pendingIndex, 1);} 
+  if (pendingIndex !== -1 ) {ER.erState.pending.splice(pendingIndex, 1);}
   ER.erState.latestRetoSuperado = ER.erState.retosSuperados.length ? Math.max(...ER.erState.retosSuperados) : null;
 }
 
@@ -594,7 +644,7 @@ const checkAvailHintsForPuzzle = (puzzleOrder) => {
         timerTitle = setInterval(interval, 5000);
         interval();
       }, timeAheadMs % 5000);
-      
+
       updateHintTooltip(i18n.notUntil + " " + each);
       $('.btn-hints').attr("disabled", true);
       return false;
@@ -666,7 +716,7 @@ const autoPlay = (newBlocks = []) => {
           auto = $(`#block-${block} iframe`).filter(function() {
             return $(this).attr("src").toLowerCase().indexOf("autoplay".toLowerCase()) != -1;
           });
-        } 
+        }
         if (!auto.length) { // Video
           auto = $(`#block-${block} video`).filter(function() {
             return $(this).attr("src").toLowerCase().indexOf("autoplay".toLowerCase()) != -1;
@@ -688,7 +738,7 @@ const autoPlay = (newBlocks = []) => {
                 return true;
               } catch(e3){return false;}
             }
-              
+
           };
 
           setTimeout(async ()=>{
@@ -754,8 +804,8 @@ const autoPlay = (newBlocks = []) => {
 
 const initSocketServer = (escapeRoomId, teamId, turnId, username) => {
   socket = io('/', {query: {
-    escapeRoom: escapeRoomId == "undefined" ? undefined : escapeRoomId, 
-    turn: turnId == "undefined" ? undefined : turnId  
+    escapeRoom: escapeRoomId == "undefined" ? undefined : escapeRoomId,
+    turn: turnId == "undefined" ? undefined : turnId
   }});
   myTeamId = teamId;
   myUsername = username;
@@ -766,7 +816,7 @@ const initSocketServer = (escapeRoomId, teamId, turnId, username) => {
   socket.on("error", console.err);
 
   /*Join*/
-  socket.on("JOIN", onJoin); 
+  socket.on("JOIN", onJoin);
 
   /*Team join*/
   socket.on("JOIN_TEAM", onJoin);
@@ -775,10 +825,10 @@ const initSocketServer = (escapeRoomId, teamId, turnId, username) => {
   socket.on("JOIN_PARTICIPANT", onJoin);
 
   /*Start*/
-  socket.on("START", onStart); 
+  socket.on("START", onStart);
 
   /*Start*/
-  socket.on("STOP", onStop); 
+  socket.on("STOP", onStop);
 
   /*Initial info*/
   socket.on("INITIAL_INFO", onInitialInfo);
@@ -796,7 +846,7 @@ const initSocketServer = (escapeRoomId, teamId, turnId, username) => {
   socket.on("MESSAGE", onMessage);
 
   /*Join*/
-  // socket.on("LEAVE", onLeave); 
+  // socket.on("LEAVE", onLeave);
 
   /*Participant leave*/
   socket.on("LEAVE_PARTICIPANT", onLeave);
@@ -810,6 +860,12 @@ const initSocketServer = (escapeRoomId, teamId, turnId, username) => {
   /*Reconnect*/
   socket.on("reconnect", onConnect);
 
+  /*Team needs help*/
+  socket.on("NEED_HELP", onNeedHelp);
+
+  /*Team needs help max duration*/
+  socket.on("NEED_HELP_MAX", onNeedHelpMax);
+
 };
 let showModT = false;
 let showNavT = false;
@@ -817,17 +873,17 @@ $( ()=>{
   $('[data-toggle="tooltip"]').tooltip({placement: "bottom"})
   $('.btn-hints-modal-title').tooltip({placement: "bottom"})
     .on('show.bs.tooltip', function(e) {
-      showModT= e.target.id;  
+      showModT= e.target.id;
     })
     .on('hide.bs.tooltip', function(e) {
-      showModT= false  
+      showModT= false
     });
   $('#btn-hints-nav-tooltip').tooltip({placement: "bottom"})
     .on('show.bs.tooltip', function(e) {
-      showNavT= true  
+      showNavT= true
     })
     .on('hide.bs.tooltip', function(e) {
-      showNavT= false  
+      showNavT= false
     });
   checkAvailHintsForPuzzle(ER.erState.currentlyWorkingOn);
   /** BTN ACTIONS **/
@@ -856,6 +912,56 @@ $( ()=>{
     $('#btn-hints-nav-tooltip').tooltip("hide")
     hintReq();
     $('#hintModal').modal("show");
+  });
+
+  $(document).on("click", "#hintHelp-btn-accept", function(){
+    $('#hintHelp').hide();
+      hintReq();
+      $('.btn-reqHint-Modal').hide();
+      $('#hintModal').modal("show");
+  });
+
+  $(document).on("click", "#hintHelp-btn-cancel", function(){
+    $('#hintHelp').hide();
+  });
+
+  $(document).on("click", "#hintHelpMax-btn-accept", function(){
+    $('#hintHelpMax').hide();
+    hintReq();
+    $('.btn-reqHint-Modal').hide();
+    $('#hintModal').modal("show");
+  });
+
+  $(document).on("click", "#hintHelpMax-btn-cancel", function(){
+    $('#hintHelpMax').hide();
+  });
+
+  $(document).on("click", "#close-hint-modal", function(){
+    $('.btn-reqHint-Modal').show();
+  });
+
+  $(document).on("click", "#lastHintHelp-btn-accept", function(){
+    $('#lastHintHelp').hide();
+    hintReq();
+    $('#lastHintModal').modal("show");
+  });
+
+  $(document).on("click", "#lastHintHelp-btn-cancel", function(){
+    $('#lastHintHelp').hide();
+  });
+
+  $(document).on("click", "#lastHintHelpMax-btn-accept", function(){
+    $('#lastHintHelpMax').hide();
+    hintReq();
+    $('#lastHintModal').modal("show");
+  });
+
+  $(document).on("click", "#lastHintHelpMax-btn-cancel", function(){
+    $('#lastHintHelpMax').hide();
+  });
+
+  $(document).on("click", "#close-lastHint-modal", function(){
+    $('#btn-reqHint').attr("disabled", true);
   });
 
   $(document).on("click", ".btn-hints-modal", function(){
