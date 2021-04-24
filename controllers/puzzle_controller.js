@@ -83,6 +83,8 @@ exports.retosUpdate = async (req, res) => {
                     oldPuzzle.order = reto.order;
                     oldPuzzle.desc = reto.desc;
                     oldPuzzle.sol = reto.sol;
+                    oldPuzzle.duration = reto.duration;
+                    oldPuzzle.maxDuration = reto.maxDuration;
                     oldPuzzle.correct = reto.correct;
                     oldPuzzle.fail = reto.fail;
                     promises.push(oldPuzzle.save({transaction}));

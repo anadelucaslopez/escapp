@@ -332,7 +332,16 @@
             "reconnect": "Attempting to reconnect...",
             "connected": "Connected!",
             "confirmSupport" : "Are you sure you need tech support?",
-            "Exit": "Exit"
+            "Exit": "Exit",
+            "msgSlow": "You have exceeded the estimated duration of the puzzle",
+            "msgSlowReqHint": "You have exceeded the estimated duration of the puzzle. Request a hint",
+            "msgSlowMax": "You have exceeded the maximum duration of the puzzle",
+            "msgSlowReqHintMax": "You have exceeded the maximum duration of the puzzle. Request a hint",
+            "giveHintAutomaticHelpText": "You have exceeded the estimated duration of the puzzle. Do you want a hint?",
+            "giveLastHintAutomaticHelpText": "You have exceeded the estimated duration of the puzzle. Do you want the last hint?",
+            "giveHintAutomaticHelpTextMax": "You have exceeded the maximum duration of the puzzle. Do you want a hint?",
+            "giveLastHintAutomaticHelpTextMax": "You have exceeded the maximum duration of the puzzle. Do you want the last hint?",
+            "lastHint": "Last hint of the puzzle"
         },
         "fields": {
 
@@ -388,7 +397,6 @@
                 "title": "Escape Room basic configuration",
                 "titlePlaceHolder": "What is the Escape Room's name?",
                 "videoPlaceHolder": "An URL dor the Escape Room's introduction video"
-
             },
             "evaluation": {
                 "eachHint": "Assign a penalty or reward for requesting a hint",
@@ -419,13 +427,15 @@
             "hints": {
                 "correctNumber": "Number of correct answers",
                 "correctNumberPlaceHolder": "How many correct answers do students need to obtain a hint?",
-                "explanation": "In this step you can select the hint strategy of your escape room. There are three strategies available: not allowing hints, allowing free hints, and requiring students to solve a quiz in order to obtain a hint. If you enable hints, you can set a limit of hints that students can obtain. If you choose the last strategy, you need to upload a MoodleXML file containing a battery of questions and indicate how many questions will be shown each attempt, how many they need to get right in order to pass, and whether the right answer should be shown to them after each attempt",
+                "genericExplanation": "In this step you can select the hint strategy of your escape room and the type of automatic help you want to provide.",
+                "hintManagementExplanation": "In this step you can select the hint strategy. There are three strategies available: not allowing hints, allowing free hints, and requiring students to solve a quiz in order to obtain a hint. If you enable hints, you can set a limit of hints that students can obtain. If you choose the last strategy, you need to upload a MoodleXML file containing a battery of questions and indicate how many questions will be shown each attempt, how many they need to get right in order to pass, and whether the right answer should be shown to them after each attempt.",
+                "autHelpExplanation": "In this step you can select the type of automatic help.There are five types of automatic help: do nothing, send message indicating you are running late, send message indicating to ask for a hint, offer next hint, offer last hint. Options related to hints are only available if hints are allowed.",
                 "moodleExplanation": "If you want students to answer a quiz in order to get a hint, please upload a MoodleXML with a battery of questions",
                 "feedback": "Feedback",
                 "feedbackExplanation": "Do you want to show students the correct answers once the quiz is completed?",
                 "hintFile": "Battery of questions file",
                 "allowCustomHints": "Allow manual hints",
-                "allowCustomHintsExplanation": "If you check this option, when a team runs out of automatic hints, they will be told to ask the teacher for help instead. If not checked, students will not be able to request hints when they run out.", 
+                "allowCustomHintsExplanation": "If you check this option, when a team runs out of automatic hints, they will be told to ask the teacher for help instead. If not checked, students will not be able to request hints when they run out.",
                 "hintInterval": "Hint frequency",
                 "hintIntervalExplanation": "How much time (in minutes) do students need to wait before asking for a new hint?",
                 "hintLimit": "Hint limit",
@@ -440,8 +450,19 @@
                 "questionNumber": "Number of questions",
                 "questionNumberExplanation": "Questions will be randomly picked from the MoodleXML file",
                 "questionNumberPlaceHolder": "How many questions per attempt doy you want?",
-                "title": "Hint management",
-                "uploadFile": "Please upload a MoodleXML file"
+                "title": "Help management",
+                "hintsTitle": "Hints management",
+                "autHelpTitle": "Automatic help management",
+                "uploadFile": "Please upload a MoodleXML file",
+                "automaticHelpOptions": {
+                    "none": "Do nothing",
+                    "msg": "Send a message indicating that you are running late",
+                    "reqOneHint": "Send a message indicating to ask for a hint",
+                    "giveNextHint": "Offer the next available hint",
+                    "giveLastHint": "Offer the last available hint"
+                },
+                "autHelpOptionsDuration": "¿What type of help should be provided when the estimated duration of the puzzle is exceeded?",
+                "autHelpOptionsMaxDuration": "¿What type of help should be provided when the maximum duration of the puzzle is exceeded?"
             },
             "team": {
                 "explanation": "Here you can customize the interface that students will see on their computers when they are playing. You can add any information they need in order to participate: links, images, messages, the first clue, etc.",
@@ -485,7 +506,7 @@
             "list": {
                 "edit":"Basic configuration",
                 "evaluation": "Evaluation",
-                "hints": "Hint management",
+                "hints": "Help management",
                 "assets": "Asset upload",
                 "team": "Team Interface",
                 "indications": "Pre-activity instructions",
@@ -502,6 +523,8 @@
             	"automatic": "Automatic",
                 "clueName": "Clue name",
                 "description": "Description",
+                "duration": "Estimated duration",
+                "maxDuration": "Maximum duration",
                 "failMsg": "Message on fail",
                 "Hint": "Hint",
                 "hints": "Hints",
@@ -524,6 +547,7 @@
                 "indicacion": "Add a comment",
                 "addTitle": "Add a new shift",
                 "alwaysTitle": "Shift always open",
+                "allowAutomaticHelp": "Enable automatic help for puzzles",
                 "deleteTitle": "Delete shift",
                 "editTitle": "Edit shift",
                 "hourTitle": "Set time",
@@ -537,8 +561,8 @@
                 "password": "Password",
                 "passwordPlaceholder": "Password to access the shift. By default it is the same you provided for the escape room",
                 "passwordEmpty": "none",
-                "capacity": "Capacity",             
-                "capacityPlaceholder": "Maximum people allowed in this shift. Leave it blank if you do not want to limit it"             
+                "capacity": "Capacity",
+                "capacityPlaceholder": "Maximum people allowed in this shift. Leave it blank if you do not want to limit it"
             }
         },
         "general": {
@@ -794,7 +818,7 @@
             "appearance": "Appearance",
             "basic": "Basic configuration",
             "puzzles": "Puzzles & hints",
-            "hintStrategy": "Hint management",
+            "hintStrategy": "Help management",
             "message": "Messages",
             "management": "Management",
             "setup": "Setup",
@@ -1066,7 +1090,7 @@
         "participant": "Just one person (if connected)",
         "waiting": "Include participants waiting to enter the escape room as well",
         "msgPlaceholder": "Write here your message",
-        "msgPlaceholder2": "Write here your message. All the users in this list that are currently connected will receive it."
-
+        "msgPlaceholder2": "Write here your message. All the users in this list that are currently connected will receive it.",
+        "msgSlowSol": "Maybe you need some help to solve the puzzle"
     }
 }

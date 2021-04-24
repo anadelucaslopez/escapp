@@ -76,7 +76,7 @@ exports.pistasUpdate = async (req, res) => {
     const isPrevious = Boolean(body.previous);
     const progressBar = body.progress;
     const {i18n} = res.locals;
-    const {numQuestions, numRight, feedback, hintLimit, allowCustomHints, hintInterval} = body;
+    const {numQuestions, numRight, feedback, hintLimit, allowCustomHints, hintInterval, autHelpOptionsDuration, autHelpOptionsMaxDuration} = body;
     let pctgRight = numRight || 0;
 
     pctgRight = (numRight >= 0 && numRight <= numQuestions ? numRight : numQuestions) * 100 / (numQuestions || 1);
@@ -87,10 +87,12 @@ exports.pistasUpdate = async (req, res) => {
     escapeRoom.feedback = Boolean(feedback);
     escapeRoom.hintInterval = hintInterval || null;
     escapeRoom.allowCustomHints = Boolean(allowCustomHints);
+    escapeRoom.autHelpOptionsDuration = autHelpOptionsDuration === "none" || autHelpOptionsDuration === "msg" || autHelpOptionsDuration === "reqOneHint" || autHelpOptionsDuration === "giveNextHint" || autHelpOptionsDuration === "giveLastHint" ? autHelpOptionsDuration : null;
+    escapeRoom.autHelpOptionsMaxDuration = autHelpOptionsMaxDuration === "none" || autHelpOptionsMaxDuration === "msg" || autHelpOptionsMaxDuration === "reqOneHint" || autHelpOptionsMaxDuration === "giveNextHint" || autHelpOptionsMaxDuration === "giveLastHint" ? autHelpOptionsMaxDuration : null;
     const back = `/escapeRooms/${escapeRoom.id}/${isPrevious ? prevStep("hints") : progressBar || nextStep("hints")}`;
 
     try {
-        await escapeRoom.save({"fields": ["numQuestions", "hintLimit", "numRight", "feedback", "allowCustomHints", "hintInterval"]});
+        await escapeRoom.save({"fields": ["numQuestions", "hintLimit", "numRight", "feedback", "allowCustomHints", "hintInterval", "autHelpOptionsDuration", "autHelpOptionsMaxDuration"]});
         if (body.keepAttachment === "0") {
             // There is no attachment: Delete old attachment.
             escapeRoom.hintApp = await models.hintApp.findOne({"where": {"escapeRoomId": req.escapeRoom.id}});

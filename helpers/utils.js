@@ -8,6 +8,9 @@ const ejs = require("ejs");
 const queries = require("../queries");
 const {OK, NOT_A_PARTICIPANT, PARTICIPANT, NOK, NOT_ACTIVE, NOT_STARTED, TOO_LATE, AUTHOR, ERROR} = require("../helpers/apiCodes");
 const {getRetosSuperados, byRanking, getPuzzleOrderSuperados} = require("./analytics");
+const {removeDiacritics} = require("./diacritics.js");
+// Const {startAutomaticHelpOneTeam} = require("./automaticHelp");
+
 
 exports.flattenObject = (obj, labels, min = false) => {
     const rs = {};
@@ -99,6 +102,12 @@ exports.playInterface = async (name, req, res, next) => {
             });
 
             const team = teams && teams[0] ? teams[0] : {};
+            /*
+            Const puzzles = await exports.getERPuzzles(req.escapeRoom.id);
+
+            if (team.turno.date === undefined) {
+                startAutomaticHelpOneTeam(team, puzzles);
+            } */
 
             if (!team.startTime || team.turno.status !== "active" || exports.isTooLate(team, req.escapeRoom.forbiddenLateSubmissions, req.escapeRoom.duration) || team.retos.length === req.escapeRoom.puzzles.length) {
                 res.redirect(`/escapeRooms/${req.escapeRoom.id}`);
@@ -255,7 +264,8 @@ exports.checkPuzzle = async (solution, puzzle, escapeRoom, teams, user, i18n, pu
     let alreadySolved = false;
 
     try {
-        correctAnswer = answer.toString().toLowerCase().trim() === puzzleSol.toString().toLowerCase().trim();
+        correctAnswer = removeDiacritics(answer.toString().toLowerCase().trim()) === removeDiacritics(puzzleSol.toString().toLowerCase().trim());
+        console.log(removeDiacritics(answer.toString().toLowerCase().trim()));
         if (correctAnswer) {
             msg = puzzle.correct || i18n.escapeRoom.play.correct;
         } else {
@@ -360,6 +370,28 @@ exports.getCurrentPuzzle = async (team, puzzles) => {
     return currentlyWorkingOn;
 };
 
+exports.getCurrentPuzzleAndCurrentTime = async (team, puzzles) => {
+    const startTimePuzzle = team.turno.startTime || team.startTime;
+    let timeInvert = new Date() - startTimePuzzle; // El primer puzzle al no haber superados tiene este tiempo
+    const retosSuperados = await team.getRetos();
+    const retosSuperadosOrder = retosSuperados.map((r) => r.order);
+    const pending = puzzles.map((p) => p.order).filter((p) => retosSuperadosOrder.indexOf(p) === -1);
+    let currentlyWorkingOn = retosSuperadosOrder.length ? Math.max(...retosSuperadosOrder) + 1 : 0;
+
+    if (retosSuperados.length > 0) {
+        console.log("ENTRA EN RETOS SUPERADOS");
+        const latestRetoSuperado = retosSuperados[retosSuperados.length - 1];
+
+        timeInvert = new Date() - latestRetoSuperado.retosSuperados.createdAt; // Momento en el que ha acabado el tiempo, .retosSuperados.createdAt sino coge la de creacion del puzzle
+
+        if (retosSuperadosOrder.length === puzzles.length) {
+            currentlyWorkingOn = null;
+        } else if (currentlyWorkingOn >= puzzles.length) {
+            [currentlyWorkingOn] = pending;
+        }
+    }
+    return {"currentPuzzle": currentlyWorkingOn, "timeElapsed": timeInvert, retosSuperados};
+};
 
 exports.areHintsAllowedForTeam = async (teamId, hintLimit) => {
     const reqHints = await models.requestedHint.findAll({"where": { teamId}});
@@ -401,7 +433,6 @@ exports.ckeditorResponse = (funcNum, url) => `<script type='text/javascript'>
     var funcNum = ${funcNum};
     var url     = "${url}";
     var message = "Uploaded file successfully";
-
     window.parent.CKEDITOR.tools.callFunction(funcNum, url, message);
 </script>`;
 
@@ -420,4 +451,3 @@ exports.validationError = ({instance, path, validatorKey}, i18n) => {
 };
 
 exports.isValidDate = (d) => d === null || d instanceof Date && !isNaN(d);
-

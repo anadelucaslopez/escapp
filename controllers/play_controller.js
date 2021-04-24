@@ -4,6 +4,7 @@ const {models} = require("../models");
 const {MESSAGE} = require("../helpers/apiCodes");
 const queries = require("../queries");
 const {sendJoinTeam, sendStartTeam, sendTurnMessage, sendTeamMessage} = require("../helpers/sockets");
+const {startAutomaticHelpOneTeam} = require("../helpers/automaticHelp");
 
 
 // GET /escapeRooms/:escapeRoomId/play
@@ -97,6 +98,13 @@ exports.startPlaying = async (req, res, next) => {
 
             sendStartTeam(joinTeam.id, "OK", true, "PARTICIPANT", i18n.escapeRoom.api.participationStart.PARTICIPANT, erState);
             sendJoinTeam(joinTeam.id, joinTeam.turno.id, erState.ranking);
+            // Llamo a la ayuda auto team y puzzles
+            console.log("JUGANDOOO");
+            const turno = await models.turno.findOne({"where": {"id": joinTeam.turno.id, "escapeRoomId": req.escapeRoom.id}, "attributes": ["allowAutomaticHelp", "date"]});
+
+            if (turno.date === null && turno.allowAutomaticHelp) { // Si el turno es autonomo (asincrono)
+                startAutomaticHelpOneTeam(team, puzzles, req.escapeRoom);
+            }
         }
     } catch (err) {
         console.error(err);
@@ -169,4 +177,3 @@ exports.sendMessage = async (req, res) => {
     }
     res.end();
 };
-

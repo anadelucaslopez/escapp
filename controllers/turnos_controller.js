@@ -112,6 +112,9 @@ exports.activate = async (req, res, next) => {
         req.flash("success", turno.status === "active" ? i18n.turno.activated : i18n.turno.deactivated);
         if (turno.status === "active") {
             startTurno(turno.id);
+            // llamar funcion
+            // console.log("ANTESSS DEL TIMEOUT");
+            // setTimeout(() => exports.startAutomaticHelpShift(team, puzzles, escapeRoom), 15000);
             res.redirect(`/escapeRooms/${escapeRoom.id}/turnos/${turno.id}/play`);
         } else {
             stopTurno(turno.id);
@@ -131,7 +134,7 @@ exports.activate = async (req, res, next) => {
 
 // POST /escapeRooms/:escapeRoomId/turnos
 exports.create = async (req, res, next) => {
-    const {date, place, from, to, capacity, password} = req.body;
+    const {date, place, from, to, capacity, password, allowAutomaticHelp} = req.body;
     const {i18n} = res.locals;
     const modDate = date === "always" ? null : new Date(date);
     const back = date === "always" ? `/escapeRooms/${req.escapeRoom.id}/turnos` : `/escapeRooms/${req.escapeRoom.id}/turnos?date=${modDate.getFullYear()}-${modDate.getMonth() + 1}-${modDate.getDate()}`;
@@ -140,6 +143,7 @@ exports.create = async (req, res, next) => {
         "capacity": parseInt(capacity || 0, 10),
         place,
         password,
+        allowAutomaticHelp,
         "status": date === "always" ? "active" : "pending",
         "escapeRoomId": req.escapeRoom.id,
         "date": modDate,
@@ -184,7 +188,7 @@ exports.create = async (req, res, next) => {
 
 // PUT /escapeRooms/:escapeRoomId/turno/:turnoId
 exports.update = async (req, res, next) => {
-    const {date, place, from, to, capacity, password} = req.body;
+    const {date, place, from, to, capacity, password, allowAutomaticHelp} = req.body;
     const {turn} = req;
     const modDate = date === "always" ? null : new Date(date);
     const {i18n} = res.locals;
@@ -195,6 +199,7 @@ exports.update = async (req, res, next) => {
     turn.from = from ? new Date(from) : null;
     turn.to = to ? new Date(to) : null;
     turn.password = password;
+    turn.allowAutomaticHelp = allowAutomaticHelp;
     turn.status = date === "always" && turn.status === "pending" ? "active" : turn.status;
     const back = date === "always" ? `/escapeRooms/${req.escapeRoom.id}/turnos` : `/escapeRooms/${req.escapeRoom.id}/turnos?date=${modDate.getFullYear()}-${modDate.getMonth() + 1}-${modDate.getDate()}`;
 

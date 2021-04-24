@@ -8,7 +8,7 @@ exports.checkJoinToken = (req, res, next) => {
     const password = (req.turn ? req.turn.password || req.escapeRoom.invitation : req.escapeRoom.invitation) || "";
 
     if (token !== password) {
-        if (req.query.nocheck != 1) {
+        if (req.query.nocheck !== 1) {
             req.flash("error", i18n.participant.wrongToken);
         }
         res.redirect(`/escapeRooms/${req.escapeRoom.id}/${req.turn ? `turnos/${req.turn.id}/select` : "/join"}`);

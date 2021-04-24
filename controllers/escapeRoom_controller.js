@@ -108,23 +108,25 @@ exports.show = async (req, res) => {
 
 // GET /escapeRooms/new
 exports.new = (_req, res) => {
-    const escapeRoom = {"title": "", "teacher": "", "subject": "", "duration": "", "description": "", "scope": false, "teamSize": "", "forceLang": ""};
+    const escapeRoom = {"title": "", "teacher": "", "subject": "", "duration": "", "description": "", "scope": false, "teamSize": "", "autHelpOptionsDuration": "", "autHelpOptionsMaxDuration": "", "forceLang": ""};
 
     res.render("escapeRooms/new", {escapeRoom, "progress": "edit"});
 };
 
 // POST /escapeRooms/create
 exports.create = async (req, res) => {
-    const {title, subject, duration, forbiddenLateSubmissions, description, scope, teamSize, supportLink, forceLang, invitation} = req.body,
+    const {title, subject, duration, forbiddenLateSubmissions, description, scope, teamSize, autHelpOptionsDuration, autHelpOptionsMaxDuration,supportLink, forceLang, invitation} = req.body,
         authorId = req.session.user && req.session.user.id || 0;
 
-    const escapeRoom = models.escapeRoom.build({title, subject, duration, "forbiddenLateSubmissions": forbiddenLateSubmissions === "on", invitation, description, supportLink, "scope": scope === "private", "teamSize": teamSize || 0, authorId, forceLang}); // Saves only the fields question and answer into the DDBB
+    const escapeRoom = models.escapeRoom.build({title, subject, duration, "forbiddenLateSubmissions": forbiddenLateSubmissions === "on", invitation, description, supportLink, "scope": scope === "private", "teamSize": teamSize || 0, autHelpOptionsDuration, autHelpOptionsMaxDuration, authorId, forceLang}); // Saves only the fields question and answer into the DDBB
     const {i18n} = res.locals;
 
     escapeRoom.forceLang = forceLang === "en" || forceLang === "es" ? forceLang : null;
+    escapeRoom.autHelpOptionsDuration = autHelpOptionsDuration === "none" || autHelpOptionsDuration === "msg" || autHelpOptionsDuration === "reqOneHint" || autHelpOptionsDuration === "giveNextHint" || autHelpOptionsDuration === "giveLastHint" ? autHelpOptionsDuration : null;
+    escapeRoom.autHelpOptionsMaxDuration = autHelpOptionsMaxDuration === "none" || autHelpOptionsMaxDuration === "msg" || autHelpOptionsMaxDuration === "reqOneHint" || autHelpOptionsMaxDuration === "giveNextHint" || autHelpOptionsMaxDuration === "giveLastHint" ? autHelpOptionsMaxDuration : null;
 
     try {
-        const er = await escapeRoom.save({"fields": ["title", "teacher", "subject", "duration", "description", "forbiddenLateSubmissions", "scope", "teamSize", "authorId", "supportLink", "invitation", "forceLang"]});
+        const er = await escapeRoom.save({"fields": ["title", "teacher", "subject", "duration", "description", "forbiddenLateSubmissions", "scope", "teamSize", "autHelpOptionsDuration", "autHelpOptionsMaxDuration", "authorId", "supportLink", "invitation", "forceLang"]});
 
         req.flash("success", i18n.common.flash.successCreatingER);
 
@@ -190,14 +192,16 @@ exports.update = async (req, res) => {
     escapeRoom.forbiddenLateSubmissions = body.forbiddenLateSubmissions === "on";
     escapeRoom.description = body.description;
     escapeRoom.supportLink = body.supportLink;
-    escapeRoom.invitation = body.invitation;
+    escapeRoom.invitation = body.invitation !== undefined ? body.invitation.toString() : undefined;
     escapeRoom.scope = body.scope === "private";
     escapeRoom.teamSize = body.teamSize || 0;
+    escapeRoom.autHelpOptionsDuration = body.autHelpOptionsDuration === "none" || body.autHelpOptionsDuration === "msg" || body.autHelpOptionsDuration === "reqOneHint" || body.autHelpOptionsDuration === "giveNextHint" || body.autHelpOptionsDuration === "giveLastHint" ? body.autHelpOptionsDuration : null;
+    escapeRoom.autHelpOptionsMaxDuration = body.autHelpOptionsMaxDuration === "none" || body.autHelpOptionsMaxDuration === "msg" || body.autHelpOptionsMaxDuration === "reqOneHint" || body.autHelpOptionsMaxDuration === "giveNextHint" || body.autHelpOptionsMaxDuration === "giveLastHint" ? body.autHelpOptionsMaxDuration : null;
     escapeRoom.forceLang = body.forceLang === "en" || body.forceLang === "es" ? body.forceLang : null;
     const progressBar = body.progress;
 
     try {
-        const er = await escapeRoom.save({"fields": ["title", "subject", "duration", "forbiddenLateSubmissions", "description", "scope", "teamSize", "supportLink", "forceLang", "invitation"]});
+        const er = await escapeRoom.save({"fields": ["title", "subject", "duration", "forbiddenLateSubmissions", "description", "scope", "teamSize", "autHelpOptionsDuration", "autHelpOptionsMaxDuration", "supportLink", "forceLang", "invitation"]});
 
         if (body.keepAttachment === "0") {
             // There is no attachment: Delete old attachment.
@@ -369,7 +373,7 @@ exports.destroy = async (req, res, next) => {
 
 exports.clone = async (req, res, next) => {
     try {
-        const {"title": oldTitle, subject, duration, description, scope, teamSize, teamAppearance, classAppearance, forceLang, survey, pretest, posttest, numQuestions, numRight, feedback, forbiddenLateSubmissions, classInstructions, teamInstructions, indicationsInstructions, scoreParticipation, hintLimit, hintSuccess, hintFailed, puzzles, hintApp, assets, attachment, allowCustomHints, hintInterval, supportLink, automaticAttendance} = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadComplete);
+        const {"title": oldTitle, subject, duration, description, scope, teamSize, autHelpOptionsDuration, autHelpOptionsMaxDuration, teamAppearance, classAppearance, forceLang, survey, pretest, posttest, numQuestions, numRight, feedback, forbiddenLateSubmissions, classInstructions, teamInstructions, indicationsInstructions, scoreParticipation, hintLimit, hintSuccess, hintFailed, puzzles, hintApp, assets, attachment, allowCustomHints, hintInterval, supportLink, automaticAttendance} = await models.escapeRoom.findByPk(req.escapeRoom.id, query.escapeRoom.loadComplete);
         const authorId = req.session && req.session.user && req.session.user.id || 0;
         const newTitle = `${res.locals.i18n.escapeRoom.main.copyOf} ${oldTitle}`;
         const include = [{"model": models.puzzle, "include": [models.hint]}];
@@ -390,6 +394,8 @@ exports.clone = async (req, res, next) => {
             description,
             scope,
             teamSize,
+            autHelpOptionsDuration,
+            autHelpOptionsMaxDuration,
             forceLang,
             teamAppearance,
             classAppearance,
@@ -412,11 +418,13 @@ exports.clone = async (req, res, next) => {
             authorId,
             supportLink,
             automaticAttendance,
-            "puzzles": [...puzzles].map(({title, sol, desc, order, correct, fail, automatic, score, hints}) => ({
+            "puzzles": [...puzzles].map(({title, sol, desc, order, duration, maxDuration, correct, fail, automatic, score, hints}) => ({
                 title,
                 sol,
                 desc,
                 order,
+                duration,
+                maxDuration,
                 correct,
                 fail,
                 automatic,

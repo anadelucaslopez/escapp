@@ -281,7 +281,7 @@
             "hintsAllowed": {
                 "true": "El equipo puede pedir más pistas",
                 "false": "El equipo NO puede pedir más pistas"
-            }        
+            }
         },
         "play": {
             "check": "Comprobar",
@@ -327,8 +327,16 @@
             "disconnect": "Se ha perdido la conexión",
             "reconnect": "Intentando volver a conectar...",
             "connected": "¡Conexión recuperada!",
-             "confirmSupport" : "¿Estás seguro de que necesitas ayuda técnica?"
-
+            "confirmSupport" : "¿Estás seguro de que necesitas ayuda técnica?",
+            "msgSlow": "Has superado la duración estimada del reto",
+            "msgSlowReqHint": "Has superado la duración estimada del reto. Pide una pista",
+            "msgSlowMax": "Has superado la duración máxima del reto",
+            "msgSlowReqHintMax": "Has superado la duración máxima del reto. Pide una pista",
+            "giveHintAutomaticHelpText": "Has superado la duración estimada del reto. ¿Quieres una pista?",
+            "giveLastHintAutomaticHelpText": "Has superado la duración estimada del reto. ¿Quieres la última pista?",
+            "giveHintAutomaticHelpTextMax": "Has superado la duración máxima del reto. ¿Quieres una pista?",
+            "giveLastHintAutomaticHelpTextMax": "Has superado la duración máxima del reto. ¿Quieres la última pista?",
+            "lastHint": "Última pista del reto"
         },
         "invitation": {
             "no": "no",
@@ -408,7 +416,9 @@
                 "automaticAttendanceTeam": "Marcar asistencia a todo el equipo"
             },
             "hints": {
-                "explanation": "En este apartado puedes configurar la estrategia de pistas a seguir durante la escape room. Hay tres estragias disponibles: no permitir pistas; permitir que el alumno obtenga una pista cuando la necesite sin proporcionar nada a cambio, y permitir que el alumno obtenga una pista tras responder correctamente a un cuestionario. Si habilitas las pistas, puedes configurar el límite de pistas que puede recibir cada equipo durante la escape room. Si eliges la última estrategia, sólo tienes que subir un fichero MoodleXML con una batería de preguntas e indicar cuántas se les muestran cada intento, cuántas deben acertar para lograr una pista y si se les muestra la respuesta correcta al finalizar cada intento.",
+                "genericExplanation": "En este apartado puedes configurar la estrategia de pistas a seguir durante la escape room y el tipo de ayuda automática que desees proporcionar.",
+                "hintManagementExplanation": "En este apartado puedes configurar la estrategia de pistas a seguir. Hay tres estrategias disponibles: no permitir pistas, permitir que el alumno obtenga una pista cuando la necesite sin proporcionar nada a cambio, y permitir que el alumno obtenga una pista tras responder correctamente a un cuestionario. Si habilitas las pistas, puedes configurar el límite de pistas que puede recibir cada equipo durante la escape room. Si eliges la última estrategia, sólo tienes que subir un fichero MoodleXML con una batería de preguntas e indicar cuántas se les muestran cada intento, cuántas deben acertar para lograr una pista y si se les muestra la respuesta correcta al finalizar cada intento.",
+                "autHelpExplanation": "En este apartado puedes configurar el tipo de ayuda automática. Hay cinco tipos de ayuda automática: no hacer nada, enviar mensaje indicando que va retrasado, enviar mensaje para que pida pista, ofrecer la siguiente pista y ofrecer la última pista. Las opciones relacionadas con pistas están disponibles solo si se permiten pistas.",
                 "correctNumber": "Número de aciertos",
                 "correctNumberPlaceHolder": "¿Cuántas preguntas hay que acertar para obtener una pista?",
                 "moodleXMLExplanation": "Si quieres que los alumnos tengan que responder a una serie de preguntas para obtener una pista, sube un fichero MoodleXML que incluya una batería de preguntas",
@@ -416,7 +426,7 @@
                 "feedbackExplanation": "¿Deseas que se muestre a los alumnos la solución de las preguntas una vez respondidas?",
                 "hintFile": "Fichero de preguntas",
                 "allowCustomHints": "Permitir pistas manuales",
-                "allowCustomHintsExplanation": "Si se marca esta opción, cuando no queden más pistas automáticas se indicará a los alumnos que recurran al profesor. Sino, no se les permitirá seguir pidiendo pistas cuando se acaben las pistas autmáticas.", 
+                "allowCustomHintsExplanation": "Si se marca esta opción, cuando no queden más pistas automáticas se indicará a los alumnos que recurran al profesor. Sino, no se les permitirá seguir pidiendo pistas cuando se acaben las pistas autmáticas.",
                 "hintInterval": "Frecuencia de pistas",
                 "hintIntervalExplanation": "¿Cada cuántos minutos pueden pedir una pista los alumnos?",
                 "hintLimit": "Límite de pistas",
@@ -431,8 +441,19 @@
                 "questionNumber": "Número de preguntas",
                 "questionNumberExplanation": "Se seleccionarán aleatoriamente del fichero MoodleXML",
                 "questionNumberPlaceHolder": "¿Cuántas preguntas va a haber en cada intento?",
-                "title": "Gestión de pistas",
-                "uploadFile": "Sube un fichero MoodleXML"
+                "title": "Gestión de ayuda",
+                "hintsTitle": "Gestión de pistas",
+                "autHelpTitle": "Gestión de ayuda automática",
+                "uploadFile": "Sube un fichero MoodleXML",
+                "automaticHelpOptions": {
+                    "none": "No hacer nada",
+                    "msg": "Enviar mensaje indicando que va retrasado",
+                    "reqOneHint": "Enviar mensaje para que pida una pista",
+                    "giveNextHint": "Ofrecerle la siguiente pista disponible",
+                    "giveLastHint": "Ofrecerle la última pista disponible"
+                },
+                "autHelpOptionsDuration": "¿Qué tipo de ayuda se debe proporcionar cuando se supera la duración estimada del reto?",
+                "autHelpOptionsMaxDuration": "¿Qué tipo de ayuda se debe proporcionar cuando se supera la duración máxima del reto?"
             },
             "team": {
                 "explanation": "En este apartado puedes personalizar la interfaz que los estudiantes verán en sus pantallas mientras jueguen a la escape room. Puedes añadir una pista inicial, enlaces, imágenes, etc.",
@@ -476,7 +497,7 @@
             	"edit":"Configuración básica",
             	"turnos": "Turnos",
             	"puzzles": "Retos",
-                "hints": "Gestión de pistas",
+                "hints": "Gestión de ayuda",
                 "assets": "Galería de ficheros",
                 "team": "Interfaz de equipo",
             	"class": "Interfaz de clase",
@@ -492,6 +513,8 @@
             	"automatic": "Automática",
                 "clueName": "Nombre de la pista",
                 "description": "Descripción",
+                "duration": "Duración estimada",
+                "maxDuration": "Duración máxima",
                 "failMsg": "Mensaje al fallar",
                 "Hint": "Pista",
                 "hints": "Pistas",
@@ -514,6 +537,7 @@
                 "indicacion": "¿Alguna indicación?",
                 "addTitle": "Añadir turno",
                 "alwaysTitle": "Turno siempre abierto",
+                "allowAutomaticHelp": "Activar la ayuda automática para los retos",
                 "deleteTitle": "Borrar turno",
                 "editTitle": "Editar turno",
                 "hourTitle": "Fijar hora",
@@ -528,7 +552,7 @@
                 "passwordPlaceholder": "Contraseña para acceder al turno. Por defecto es la misma que para la escape room",
                 "passwordEmpty": "ninguna",
                 "capacity": "Aforo",
-                "capacityPlaceholder": "Máximo número de personas admitidas en este turno. Déjalo en blanco si no quieres limitarlo."    
+                "capacityPlaceholder": "Máximo número de personas admitidas en este turno. Déjalo en blanco si no quieres limitarlo."
             }
         },
         "general": {
@@ -631,7 +655,7 @@
                     "assembly": "Formar las partes de un objeto",
                     "info": "Extraer información",
                     "logic": "Lógica abstracta"
-                }, 
+                },
                 "resources": "Aqui podrás encontrar webs que ofrecen estos recursos."
             },
             "fourth": {
@@ -784,7 +808,7 @@
             "basic": "Configuración básica",
             "puzzles": "Retos y pistas",
             "setup": "Configuración",
-            "hintStrategy": "Gestión de pistas",
+            "hintStrategy": "Gestión de ayuda",
             "message": "Mensajes",
             "management": "Administración",
             "indications": "Instrucciones previas",
@@ -805,7 +829,7 @@
             "volver": "volver",
             "actions": "Acciones",
             "information": "Información"
-            
+
         },
         "messages": {
             "copyAria": "Input invisible para permitir copiar el link de invitación",
@@ -825,7 +849,7 @@
                 "specialShifts": "Turnos especiales"
 
             }
-            
+
         },
         "titles": {
             "appearance": "Apariencia",
@@ -1056,6 +1080,5 @@
         "waiting": "Enviar también a los participantes esperando para acceder a la escape room",
         "msgPlaceholder": "Escribe aquí tu mensaje",
         "msgPlaceholder2": "Escribe aquí tu mensaje. Todos los usuarios de esta lista que estén conectados ahora mismo lo recibirán."
-
     }
 }

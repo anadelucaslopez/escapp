@@ -21,6 +21,20 @@ module.exports = function (sequelize, DataTypes) {
                 "type": DataTypes.INTEGER,
                 "allowNull": false
             },
+            "duration": {
+                "type": DataTypes.INTEGER,
+                "validate": {
+                    "min": 0,
+                    "max": 24 * 60 * 60 * 365
+                }
+            },
+            "maxDuration": {
+                "type": DataTypes.INTEGER,
+                "validate": {
+                    "min": 0,
+                    "max": 24 * 60 * 60 * 365
+                }
+            },
             "correct": {
                 "type": DataTypes.TEXT,
                 "validate": {"len": [0, 5000]}

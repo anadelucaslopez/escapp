@@ -25,6 +25,8 @@ const LEAVE_PARTICIPANT = "LEAVE_PARTICIPANT";
 const START_PLAYING = "START_PLAYING";
 const INITIAL_INFO = "INITIAL_INFO";
 const TEAM_STARTED = "TEAM_STARTED";
+const NEED_HELP = "NEED_HELP";
+const NEED_HELP_MAX = "NEED_HELP_MAX";
 
 exports.RIGHT_ANSWER = OK;
 exports.NOK = NOK;
@@ -55,6 +57,8 @@ exports.LEAVE_PARTICIPANT = LEAVE_PARTICIPANT;
 exports.START_PLAYING = START_PLAYING;
 exports.INITIAL_INFO = INITIAL_INFO;
 exports.TEAM_STARTED = TEAM_STARTED;
+exports.NEED_HELP = NEED_HELP;
+exports.NEED_HELP_MAX = NEED_HELP_MAX;
 
 exports.getAuthMessageAndCode = (participation, i18n, start) => {
     let code = NOK;

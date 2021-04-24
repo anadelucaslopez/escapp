@@ -28,6 +28,16 @@ module.exports = function (sequelize, DataTypes) {
                 "validate": {"max": 10000, "notEmpty": {"msg": "El tamaño de los equipos no puede estar vacío."}}
             },
             "scope": {"type": DataTypes.BOOLEAN},
+            "autHelpOptionsDuration": {
+                "type": DataTypes.STRING,
+                "allowNull": true,
+                "validate": {"isIn": [["none", "msg", "reqOneHint", "giveNextHint", "giveLastHint"]]}
+            },
+            "autHelpOptionsMaxDuration": {
+                "type": DataTypes.STRING,
+                "allowNull": true,
+                "validate": {"isIn": [["none", "msg", "reqOneHint", "giveNextHint", "giveLastHint"]]}
+            },
             "invitation": {
                 "type": DataTypes.STRING
                 /* "allowNull": false,

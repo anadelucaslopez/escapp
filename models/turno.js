@@ -15,7 +15,8 @@ module.exports = function (sequelize, DataTypes) {
             "status": {
                 "type": DataTypes.STRING,
                 "defaultValue": "pending"
-            }
+            },
+            "allowAutomaticHelp": {"type": DataTypes.BOOLEAN}
         }
     );
 };
