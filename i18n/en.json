@@ -337,11 +337,14 @@
             "msgSlowReqHint": "You have exceeded the estimated duration of the puzzle. Request a hint",
             "msgSlowMax": "You have exceeded the maximum duration of the puzzle",
             "msgSlowReqHintMax": "You have exceeded the maximum duration of the puzzle. Request a hint",
-            "giveHintAutomaticHelpText": "You have exceeded the estimated duration of the puzzle. Do you want a hint?",
-            "giveLastHintAutomaticHelpText": "You have exceeded the estimated duration of the puzzle. Do you want the last hint?",
-            "giveHintAutomaticHelpTextMax": "You have exceeded the maximum duration of the puzzle. Do you want a hint?",
-            "giveLastHintAutomaticHelpTextMax": "You have exceeded the maximum duration of the puzzle. Do you want the last hint?",
-            "lastHint": "Last hint of the puzzle"
+            "giveHintAutHelpText": "You have exceeded the estimated duration of the puzzle. Do you want a hint?",
+            "giveLastHintAutHelpText": "You have exceeded the estimated duration of the puzzle. Do you want the last hint?",
+            "giveSolutionAutHelpText": "You have exceeded the estimated duration of the puzzle. Do you want the solution of the puzzle?",
+            "giveHintAutHelpTextMax": "You have exceeded the maximum duration of the puzzle. Do you want a hint?",
+            "giveLastHintAutHelpTextMax": "You have exceeded the maximum duration of the puzzle. Do you want the last hint?",
+            "giveSolutionAutHelpTextMax": "You have exceeded the maximum duration of the puzzle. Do you want the solution of the puzzle?",
+            "lastHint": "Last hint of the puzzle",
+            "solution": "Solution of the puzzle"
         },
         "fields": {
 
@@ -459,7 +462,8 @@
                     "msg": "Send a message indicating that you are running late",
                     "reqOneHint": "Send a message indicating to ask for a hint",
                     "giveNextHint": "Offer the next available hint",
-                    "giveLastHint": "Offer the last available hint"
+                    "giveLastHint": "Offer the last available hint",
+                    "giveSolution": "Offer the solution of the puzzle"
                 },
                 "autHelpOptionsDuration": "¿What type of help should be provided when the estimated duration of the puzzle is exceeded?",
                 "autHelpOptionsMaxDuration": "¿What type of help should be provided when the maximum duration of the puzzle is exceeded?"

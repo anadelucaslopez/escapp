@@ -332,11 +332,14 @@
             "msgSlowReqHint": "Has superado la duración estimada del reto. Pide una pista",
             "msgSlowMax": "Has superado la duración máxima del reto",
             "msgSlowReqHintMax": "Has superado la duración máxima del reto. Pide una pista",
-            "giveHintAutomaticHelpText": "Has superado la duración estimada del reto. ¿Quieres una pista?",
-            "giveLastHintAutomaticHelpText": "Has superado la duración estimada del reto. ¿Quieres la última pista?",
-            "giveHintAutomaticHelpTextMax": "Has superado la duración máxima del reto. ¿Quieres una pista?",
-            "giveLastHintAutomaticHelpTextMax": "Has superado la duración máxima del reto. ¿Quieres la última pista?",
-            "lastHint": "Última pista del reto"
+            "giveHintAutHelpText": "Has superado la duración estimada del reto. ¿Quieres una pista?",
+            "giveLastHintAutHelpText": "Has superado la duración estimada del reto. ¿Quieres la última pista?",
+            "giveSolutionAutHelpText": "Has superado la duración estimada del reto. ¿Quieres la solución del reto?",
+            "giveHintAutHelpTextMax": "Has superado la duración máxima del reto. ¿Quieres una pista?",
+            "giveLastHintAutHelpTextMax": "Has superado la duración máxima del reto. ¿Quieres la última pista?",
+            "giveSolutionAutHelpTextMax": "Has superado la duración máxima del reto. ¿Quieres la solución del reto?",
+            "lastHint": "Última pista del reto",
+            "solution": "Solución del reto"
         },
         "invitation": {
             "no": "no",
@@ -450,7 +453,8 @@
                     "msg": "Enviar mensaje indicando que va retrasado",
                     "reqOneHint": "Enviar mensaje para que pida una pista",
                     "giveNextHint": "Ofrecerle la siguiente pista disponible",
-                    "giveLastHint": "Ofrecerle la última pista disponible"
+                    "giveLastHint": "Ofrecerle la última pista disponible",
+                    "giveSolution": "Ofrecerle la solución del reto"
                 },
                 "autHelpOptionsDuration": "¿Qué tipo de ayuda se debe proporcionar cuando se supera la duración estimada del reto?",
                 "autHelpOptionsMaxDuration": "¿Qué tipo de ayuda se debe proporcionar cuando se supera la duración máxima del reto?"
