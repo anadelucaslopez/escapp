@@ -30,8 +30,6 @@ exports.calculateNextHint = async (escapeRoom, team, status, score, category, me
                 ],
                 "order": [["createdAt", "ASC"]]
             });
-
-            const {timeElapsed, retosSuperados} = await getCurrentPuzzleAndCurrentTime(team, escapeRoom.puzzles);
             const currentPuzzle = escapeRoom.puzzles.find((p) => p.order === currentlyWorkingOn);
 
             if (escapeRoom.hintLimit !== undefined && escapeRoom.hintLimit !== null && hints.length >= escapeRoom.hintLimit) {
@@ -39,24 +37,15 @@ exports.calculateNextHint = async (escapeRoom, team, status, score, category, me
             }
 
             if (escapeRoom.hintInterval && hints.length > 0) {
-                if (escapeRoom.autHelpOptionsDuration === "giveNextHint" || escapeRoom.autHelpOptionsDuration === "giveLastHint") {
-                    if (timeElapsed < currentPuzzle.duration * 60000) {
-                        await exports.hintIntervalMsg(escapeRoom, hints, messages);
-                    } else if (timeElapsed > currentPuzzle.duration * 60000 + 9000 && timeElapsed < currentPuzzle.maxDuration * 60000) {
-                        await exports.hintIntervalMsg(escapeRoom, hints, messages);
-                    } else if (timeElapsed > currentPuzzle.maxDuration * 60000 + 9000) {
-                        await exports.hintIntervalMsg(escapeRoom, hints, messages);
-                    }
-                } else if (escapeRoom.autHelpOptionsMaxDuration === "giveNextHint" || escapeRoom.autHelpOptionsMaxDuration === "giveLastHint") {
-                    if (timeElapsed < currentPuzzle.duration * 60000) {
-                        await exports.hintIntervalMsg(escapeRoom, hints, messages);
-                    } else if (timeElapsed > currentPuzzle.duration * 60000 + 9000 && timeElapsed < currentPuzzle.maxDuration * 60000) {
-                        await exports.hintIntervalMsg(escapeRoom, hints, messages);
-                    } else if (timeElapsed > currentPuzzle.maxDuration * 60000 + 9000) {
-                        await exports.hintIntervalMsg(escapeRoom, hints, messages);
-                    }
-                } else {
-                    await exports.hintIntervalMsg(escapeRoom, hints, messages);
+                const latestHint = hints[hints.length - 1].createdAt;
+                const now = new Date();
+                const timeSinceLastHint = (now - latestHint) / 1000 / 60;
+
+                if (timeSinceLastHint < escapeRoom.hintInterval) {
+                    const timeAhead = escapeRoom.hintInterval - timeSinceLastHint;
+                    const each = timeAhead < 1 ? `${Math.round(timeAhead * 60)} s.` : `${Math.round(timeAhead)} min.`;
+
+                    return { "msg": `${messages.notUntil} ${each}`, "ok": false };
                 }
             }
 
@@ -120,16 +109,3 @@ exports.calculateNextHint = async (escapeRoom, team, status, score, category, me
         return {"ok": false, "msg": e.message};
     }
 };
-
-exports.hintIntervalMsg = async (escapeRoom, hints, messages) => {
-    const latestHint = hints[hints.length - 1].createdAt;
-    const now = new Date();
-    const timeSinceLastHint = (now - latestHint) / 1000 / 60;
-
-    if (timeSinceLastHint < escapeRoom.hintInterval) {
-        const timeAhead = escapeRoom.hintInterval - timeSinceLastHint;
-        const each = timeAhead < 1 ? `${Math.round(timeAhead * 60)} s.` : `${Math.round(timeAhead)} min.`;
-
-        return { "msg": `${messages.notUntil} ${each}`, "ok": false };
-    }
-}
