@@ -989,12 +989,12 @@ $( ()=>{
 
   /** _giveAutomaticHelpMax.ejs giveSolution - accept button and cancel button **/
   $(document).on("click", "#solutionHelpMax-btn-accept", function(){
-    $('#solutionHelp').hide();
+    $('#solutionHelpMax').hide();
     $('#solutionModal').modal("show");
   });
 
   $(document).on("click", "#solutionHelpMax-btn-cancel", function(){
-    $('#solutionHelp').hide();
+    $('#solutionHelpMax').hide();
   });
 
   /** disable request hint when lastHint is accepted **/
