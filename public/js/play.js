@@ -308,6 +308,9 @@ const onNeedHelp = ({helpStrategyDuration}) => {
       $('#lastHintHelp').show({"backdrop": true});
     }
     break;
+  case "giveSolution":
+    $('#solutionHelp').show({"backdrop": true});
+    break;
   case "none":
   default:
     break;
@@ -332,6 +335,9 @@ const onNeedHelpMax = ({helpStrategyMaxDuration}) => {
       if (hintsAvailable) {
       $('#lastHintHelpMax').show({"backdrop": true});
     }
+    break;
+  case "giveSolution":
+    $('#solutionHelpMax').show({"backdrop": true});
     break;
   case "none":
   default:
@@ -914,6 +920,7 @@ $( ()=>{
     $('#hintModal').modal("show");
   });
 
+  /** _giveAutomaticHelp.ejs giveNextHint - accept button and cancel button **/
   $(document).on("click", "#hintHelp-btn-accept", function(){
     $('#hintHelp').hide();
       hintReq();
@@ -925,9 +932,11 @@ $( ()=>{
     $('#hintHelp').hide();
   });
 
+  /** _giveAutomaticHelpMax.ejs giveNextHint - accept button and cancel button **/
   $(document).on("click", "#hintHelpMax-btn-accept", function(){
     $('#hintHelpMax').hide();
     hintReq();
+    /** hide request hint button in modal **/
     $('.btn-reqHint-Modal').hide();
     $('#hintModal').modal("show");
   });
@@ -937,9 +946,11 @@ $( ()=>{
   });
 
   $(document).on("click", "#close-hint-modal", function(){
+    /** show request hint button in modal **/
     $('.btn-reqHint-Modal').show();
   });
 
+  /** _giveAutomaticHelp.ejs giveLastHint - accept button and cancel button **/
   $(document).on("click", "#lastHintHelp-btn-accept", function(){
     $('#lastHintHelp').hide();
     hintReq();
@@ -950,6 +961,7 @@ $( ()=>{
     $('#lastHintHelp').hide();
   });
 
+  /** _giveAutomaticHelpMax.ejs giveLastHint - accept button and cancel button **/
   $(document).on("click", "#lastHintHelpMax-btn-accept", function(){
     $('#lastHintHelpMax').hide();
     hintReq();
@@ -960,9 +972,36 @@ $( ()=>{
     $('#lastHintHelpMax').hide();
   });
 
+  /** disable request hint when lastHint is accepted **/
   $(document).on("click", "#close-lastHint-modal", function(){
     $('#btn-reqHint').attr("disabled", true);
   });
+
+  /** _giveAutomaticHelp.ejs giveSolution - accept button and cancel button **/
+  $(document).on("click", "#solutionHelp-btn-accept", function(){
+    $('#solutionHelp').hide();
+    $('#solutionModal').modal("show");
+  });
+
+  $(document).on("click", "#solutionHelp-btn-cancel", function(){
+    $('#solutionHelp').hide();
+  });
+
+  /** _giveAutomaticHelpMax.ejs giveSolution - accept button and cancel button **/
+  $(document).on("click", "#solutionHelpMax-btn-accept", function(){
+    $('#solutionHelp').hide();
+    $('#solutionModal').modal("show");
+  });
+
+  $(document).on("click", "#solutionHelpMax-btn-cancel", function(){
+    $('#solutionHelp').hide();
+  });
+
+  /** disable request hint when lastHint is accepted **/
+  $(document).on("click", "#close-solution-modal", function(){
+    $('#btn-reqHint').attr("disabled", true);
+  });
+
 
   $(document).on("click", ".btn-hints-modal", function(){
     hintReq();
