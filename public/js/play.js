@@ -332,7 +332,7 @@ const onNeedHelpMax = ({helpStrategyMaxDuration}) => {
     }
     break;
   case "giveLastHint":
-      if (hintsAvailable) {
+    if (hintsAvailable) {
       $('#lastHintHelpMax').show({"backdrop": true});
     }
     break;
@@ -348,16 +348,16 @@ const onNeedHelpMax = ({helpStrategyMaxDuration}) => {
 /** HELPERS **/
 const escapeHtml = (unsafe = "") => {
   return unsafe
-       .replace(/&/g, "&amp;")
-       .replace(/</g, "&lt;")
-       .replace(/>/g, "&gt;")
-       .replace(/"/g, "&quot;")
-       .replace(/'/g, "&#039;");
+  .replace(/&/g, "&amp;")
+  .replace(/</g, "&lt;")
+  .replace(/>/g, "&gt;")
+  .replace(/"/g, "&quot;")
+  .replace(/'/g, "&#039;");
 }
 
 const escapeUnsafeHtml = (unsafe = "") => {
   return unsafe
-       .replace(/(<\s*script[^>]*>.*?<\s*\/\s*script>)/g, "")
+  .replace(/(<\s*script[^>]*>.*?<\s*\/\s*script>)/g, "")
 }
 
 
@@ -370,16 +370,16 @@ const updateProgress = () =>  {
 
 const forMs = (delay) => {
   return new Promise(function(resolve) {
-      setTimeout(resolve, delay);
+    setTimeout(resolve, delay);
   });
 }
 
 const rgb2hex = orig => {
   var rgb = orig.replace(/\s/g,'').match(/^rgba?\((\d+),(\d+),(\d+)/i);
   return (rgb && rgb.length === 4) ? "#" +
-    ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
-    ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
-    ("0" + parseInt(rgb[3],10).toString(16)).slice(-2) : orig;
+      ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
+      ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
+      ("0" + parseInt(rgb[3],10).toString(16)).slice(-2) : orig;
 };
 
 
@@ -447,26 +447,26 @@ const updateHintTooltip = (msg) => {
 
 const updatePuzzle = (order, currentPuzzle, prevPuzzleOrder) => {
   if (order || order === 0) {
-      // Update title
-      $('#puzzle-title').data("puzzleOrder", order);
-      $('#puzzle-title').text(currentPuzzle.title);
-      // Update input
-      $('#puzzle-input').val("");
-      $('#puzzle-input').focus();
-      $('#puzzle-input').data("puzzleOrder", order);
-      $('#puzzle-input').removeClass('is-invalid');
-      $('#puzzle-input').removeClass('is-valid');
-      // Update button
-      $('#puzzle-check-btn').data("puzzleOrder", order);
-      // Update currentReto in modal
-      $('.reto-hint-li').removeClass('reto-hint-current');
-      $('.reto-hint-title-'+order).addClass('reto-hint-current');
+    // Update title
+    $('#puzzle-title').data("puzzleOrder", order);
+    $('#puzzle-title').text(currentPuzzle.title);
+    // Update input
+    $('#puzzle-input').val("");
+    $('#puzzle-input').focus();
+    $('#puzzle-input').data("puzzleOrder", order);
+    $('#puzzle-input').removeClass('is-invalid');
+    $('#puzzle-input').removeClass('is-valid');
+    // Update button
+    $('#puzzle-check-btn').data("puzzleOrder", order);
+    // Update currentReto in modal
+    $('.reto-hint-li').removeClass('reto-hint-current');
+    $('.reto-hint-title-'+order).addClass('reto-hint-current');
 
-      if (currentPuzzle.automatic) {
-        $('#puzzle-form').hide()
-      } else {
-        $('#puzzle-form').show()
-      }
+    if (currentPuzzle.automatic) {
+      $('#puzzle-form').hide()
+    } else {
+      $('#puzzle-form').show()
+    }
   } else {
     $('.reto-hint-li').removeClass('reto-hint-current');
     $('#puzzle-form').hide();
@@ -486,23 +486,23 @@ const createAlert = (level = "info", msg, keep = false) => {
 };
 
 const updateHint = (puzzleOrder, hintOrder, category) => {
-    ER.erState.latestHintObtained = new Date();
-    if (hintOrder === null) {
-      ER.erState.customHints++;
-    }
-    const currentPuzzle = ER.info.escapeRoomPuzzles.find(puz => puz.order === puzzleOrder);
-    const actualCat = category || currentPuzzle.categories[0];
-    if (ER.erState.reqHints[puzzleOrder].indexOf(hintOrder) === -1 ) { // Not hint requested before
-      ER.erState.reqHints[puzzleOrder].push(hintOrder);
-       ER.erState.automaticHints++;
-      if (currentPuzzle && hintOrder !== null) {
-        const hintArr = currentPuzzle.hints[actualCat];
-        const idx = hintArr.indexOf(hintOrder);
-        if (idx !== -1) {
-          hintArr.splice(idx, 1);
-        }
+  ER.erState.latestHintObtained = new Date();
+  if (hintOrder === null) {
+    ER.erState.customHints++;
+  }
+  const currentPuzzle = ER.info.escapeRoomPuzzles.find(puz => puz.order === puzzleOrder);
+  const actualCat = category || currentPuzzle.categories[0];
+  if (ER.erState.reqHints[puzzleOrder].indexOf(hintOrder) === -1 ) { // Not hint requested before
+    ER.erState.reqHints[puzzleOrder].push(hintOrder);
+    ER.erState.automaticHints++;
+    if (currentPuzzle && hintOrder !== null) {
+      const hintArr = currentPuzzle.hints[actualCat];
+      const idx = hintArr.indexOf(hintOrder);
+      if (idx !== -1) {
+        hintArr.splice(idx, 1);
       }
     }
+  }
 }
 
 const updateSuperados = (puzzleOrder) => {
@@ -515,19 +515,19 @@ const updateSuperados = (puzzleOrder) => {
 var insertContent = (type, payload, puzzles, index) => {
   var content = "";
   switch(type){
-      case "countdown":
-          content = countdownTemplate();
-          break;
-      case "ranking":
-          content = rankingEmptyTemplate();
-          break;
-      case "text":
-          content = `<div class="cke_editable" id="block-${index}">${escapeUnsafeHtml(payload.text)}</div>`;
-          break;
-      case "progress":
-          content = progressBarTemplate();
-          break;
-      default:
+  case "countdown":
+    content = countdownTemplate();
+    break;
+  case "ranking":
+    content = rankingEmptyTemplate();
+    break;
+  case "text":
+    content = `<div class="cke_editable" id="block-${index}">${escapeUnsafeHtml(payload.text)}</div>`;
+    break;
+  case "progress":
+    content = progressBarTemplate();
+    break;
+  default:
   }
   var htmlContent = $(blockTemplate(content, index));
   $('#editor').append(htmlContent);
@@ -640,10 +640,10 @@ const checkAvailHintsForPuzzle = (puzzleOrder) => {
       }, timeAheadMs);
 
       const interval = ()=>{
-          const timeSinceLastHint = (new Date() - ER.erState.latestHintObtained)/1000/60;
-          const timeAhead = (ER.info.hintInterval - timeSinceLastHint) ;
-          const each = timeAhead < 0.95 ? `${Math.round(timeAhead*60)} s.`:`${Math.ceil(timeAhead)} min.`;
-          updateHintTooltip(i18n.notUntil + " " + each);
+        const timeSinceLastHint = (new Date() - ER.erState.latestHintObtained)/1000/60;
+        const timeAhead = (ER.info.hintInterval - timeSinceLastHint) ;
+        const each = timeAhead < 0.95 ? `${Math.round(timeAhead*60)} s.`:`${Math.ceil(timeAhead)} min.`;
+        updateHintTooltip(i18n.notUntil + " " + each);
       }
 
       setTimeout(()=>{
@@ -653,7 +653,7 @@ const checkAvailHintsForPuzzle = (puzzleOrder) => {
 
       updateHintTooltip(i18n.notUntil + " " + each);
       $('.btn-hints').attr("disabled", true);
-      return false;
+      return true;
     }
   }
   return true;
@@ -699,110 +699,110 @@ window.requestHintFinish = (completion, score, status) => {
 
 
 const setPuzzleLS = (newBlocks = []) => setTimeout(()=>{
-    localStorage["escapp_"+escapeRoomId] =  ER.erState.startTime.toString() + "_" + newBlocks.join(",");
+  localStorage["escapp_"+escapeRoomId] =  ER.erState.startTime.toString() + "_" + newBlocks.join(",");
 }, 3000);
 
 const autoPlay = (newBlocks = []) => {
-    let ls = localStorage["escapp_" + escapeRoomId];
-    let erSt = null;
-    let previousBlocks = [];
-    try {
-      [erSt, previousBlocks] = localStorage["escapp_"+escapeRoomId].split("_");
-      previousBlocks = previousBlocks.split(",");
-    } catch(e) {}
+  let ls = localStorage["escapp_" + escapeRoomId];
+  let erSt = null;
+  let previousBlocks = [];
+  try {
+    [erSt, previousBlocks] = localStorage["escapp_"+escapeRoomId].split("_");
+    previousBlocks = previousBlocks.split(",");
+  } catch(e) {}
 
-    for (let b in newBlocks) {
-      let block = newBlocks[b].toString();
-      if (erSt !== ER.erState.startTime.toString() || (previousBlocks.indexOf(block) === -1)) { // First time
-        let auto = $( `#block-${block} [autoplay]` );
-        let youtube = false;
+  for (let b in newBlocks) {
+    let block = newBlocks[b].toString();
+    if (erSt !== ER.erState.startTime.toString() || (previousBlocks.indexOf(block) === -1)) { // First time
+      let auto = $( `#block-${block} [autoplay]` );
+      let youtube = false;
 
-        if (!auto.length) { // Iframe
-          youtube = true;
-          auto = $(`#block-${block} iframe`).filter(function() {
-            return $(this).attr("src").toLowerCase().indexOf("autoplay".toLowerCase()) != -1;
-          });
-        }
-        if (!auto.length) { // Video
-          auto = $(`#block-${block} video`).filter(function() {
-            return $(this).attr("src").toLowerCase().indexOf("autoplay".toLowerCase()) != -1;
-          });
-        }
-        if (auto.length) {
-          const play = async function(el) {
+      if (!auto.length) { // Iframe
+        youtube = true;
+        auto = $(`#block-${block} iframe`).filter(function() {
+          return $(this).attr("src").toLowerCase().indexOf("autoplay".toLowerCase()) != -1;
+        });
+      }
+      if (!auto.length) { // Video
+        auto = $(`#block-${block} video`).filter(function() {
+          return $(this).attr("src").toLowerCase().indexOf("autoplay".toLowerCase()) != -1;
+        });
+      }
+      if (auto.length) {
+        const play = async function(el) {
+          try {
+            await openFullScreen(el);
+          } catch(e2){}
+          if (youtube){
             try {
-              await openFullScreen(el);
-            } catch(e2){}
-            if (youtube){
-              try {
-                await el.playVideo();
-                return true;
-              } catch(e4){return true;}
-            } else {
-              try {
-                await el.play();
-                return true;
-              } catch(e3){return false;}
+              await el.playVideo();
+              return true;
+            } catch(e4){return true;}
+          } else {
+            try {
+              await el.play();
+              return true;
+            } catch(e3){return false;}
+          }
+
+        };
+
+        setTimeout(async ()=>{
+          if (youtube) {
+            const ok = await play(auto[0]);
+            if (!ok) {
+              $('#autoplay-btn').click(async ()=>{
+                $('#autoplay-alert').hide();
+                await play(auto[0])
+              });
+              $('#autoplay-alert').show({"backdrop": true})
+              await play(auto[0]);
             }
-
-          };
-
-          setTimeout(async ()=>{
-            if (youtube) {
+          } else {
+            try {
               const ok = await play(auto[0]);
-                if (!ok) {
-                  $('#autoplay-btn').click(async ()=>{
-                    $('#autoplay-alert').hide();
-                    await play(auto[0])
-                  });
-                  $('#autoplay-alert').show({"backdrop": true})
-                  await play(auto[0]);
-                }
-            } else {
-              try {
-                const ok = await play(auto[0]);
-                if (!ok) {
-                  $('#autoplay-btn').click(async ()=>{
-                    $('#autoplay-alert').hide();
-                    await play(auto[0])
-                  });
-                  $('#autoplay-alert').show({"backdrop": true})
-                  await play(auto[0]);
-                }
-              } catch(e){
+              if (!ok) {
+                $('#autoplay-btn').click(async ()=>{
+                  $('#autoplay-alert').hide();
+                  await play(auto[0])
+                });
+                $('#autoplay-alert').show({"backdrop": true})
+                await play(auto[0]);
               }
-            }
-            try {
-              await openFullScreen(auto[0])
             } catch(e){
-            } finally {
-              // setTimeout(()=>{
-                // var el = auto.first();
-                // var elOffset = el.offset().top;
-                // var elHeight = el.height();
-                // var windowHeight = $(window).height();
-                // var offset;
-                // if (elHeight < windowHeight) {
-                //   offset = elOffset - ((windowHeight / 2) - (elHeight / 2));
-                // } else {
-                //   offset = elOffset;
-                // }
-              //   document.body.scrollTop = offset;
-              //   document.documentElement.scrollTop = offset;
-              // },00)
-            };
-          }, 100)
-        }
-      } else {
-        try {
-          $(`#block-${block} [autoplay]`).each((_i,e)=>e.pause());
-        } catch (e) {}
-        try {
-          $(`#block-${block} video`).each((_i,e)=>e.pause());
-        } catch (e) {}
-        try {
-          $(`#block-${block} iframe`).each((_i,e)=>e.src = e.src.replace("autoplay=1","autoplay=0"));
-        } catch (e) {}
+            }
+          }
+          try {
+            await openFullScreen(auto[0])
+          } catch(e){
+          } finally {
+            // setTimeout(()=>{
+            // var el = auto.first();
+            // var elOffset = el.offset().top;
+            // var elHeight = el.height();
+            // var windowHeight = $(window).height();
+            // var offset;
+            // if (elHeight < windowHeight) {
+            //   offset = elOffset - ((windowHeight / 2) - (elHeight / 2));
+            // } else {
+            //   offset = elOffset;
+            // }
+            //   document.body.scrollTop = offset;
+            //   document.documentElement.scrollTop = offset;
+            // },00)
+          };
+        }, 100)
+      }
+    } else {
+      try {
+        $(`#block-${block} [autoplay]`).each((_i,e)=>e.pause());
+      } catch (e) {}
+      try {
+        $(`#block-${block} video`).each((_i,e)=>e.pause());
+      } catch (e) {}
+      try {
+        $(`#block-${block} iframe`).each((_i,e)=>e.src = e.src.replace("autoplay=1","autoplay=0"));
+      } catch (e) {}
     }
   }
 }
@@ -810,9 +810,9 @@ const autoPlay = (newBlocks = []) => {
 
 const initSocketServer = (escapeRoomId, teamId, turnId, username) => {
   socket = io('/', {query: {
-    escapeRoom: escapeRoomId == "undefined" ? undefined : escapeRoomId,
-    turn: turnId == "undefined" ? undefined : turnId
-  }});
+      escapeRoom: escapeRoomId == "undefined" ? undefined : escapeRoomId,
+      turn: turnId == "undefined" ? undefined : turnId
+    }});
   myTeamId = teamId;
   myUsername = username;
   /*Connect*/
@@ -878,19 +878,19 @@ let showNavT = false;
 $( ()=>{
   $('[data-toggle="tooltip"]').tooltip({placement: "bottom"})
   $('.btn-hints-modal-title').tooltip({placement: "bottom"})
-    .on('show.bs.tooltip', function(e) {
-      showModT= e.target.id;
-    })
-    .on('hide.bs.tooltip', function(e) {
-      showModT= false
-    });
+  .on('show.bs.tooltip', function(e) {
+    showModT= e.target.id;
+  })
+  .on('hide.bs.tooltip', function(e) {
+    showModT= false
+  });
   $('#btn-hints-nav-tooltip').tooltip({placement: "bottom"})
-    .on('show.bs.tooltip', function(e) {
-      showNavT= true
-    })
-    .on('hide.bs.tooltip', function(e) {
-      showNavT= false
-    });
+  .on('show.bs.tooltip', function(e) {
+    showNavT= true
+  })
+  .on('hide.bs.tooltip', function(e) {
+    showNavT= false
+  });
   checkAvailHintsForPuzzle(ER.erState.currentlyWorkingOn);
   /** BTN ACTIONS **/
 
@@ -923,9 +923,9 @@ $( ()=>{
   /** _giveAutomaticHelp.ejs giveNextHint - accept button and cancel button **/
   $(document).on("click", "#hintHelp-btn-accept", function(){
     $('#hintHelp').hide();
-      hintReq();
-      $('.btn-reqHint-Modal').hide();
-      $('#hintModal').modal("show");
+    hintReq();
+    $('.btn-reqHint-Modal').hide();
+    $('#hintModal').modal("show");
   });
 
   $(document).on("click", "#hintHelp-btn-cancel", function(){
