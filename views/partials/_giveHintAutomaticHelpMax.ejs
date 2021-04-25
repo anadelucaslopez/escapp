@@ -5,7 +5,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-body" id="hintHelpMaxContent" style="text-align: center;">
-                <p style="text-align: center;"><%=i18n.escapeRoom.play.giveHintAutomaticHelpTextMax%></p>
+                <p style="text-align: center;"><%=i18n.escapeRoom.play.giveHintAutHelpTextMax%></p>
                 <button class="btn btn-success" id="hintHelpMax-btn-accept"><%=i18n.common.accept%></button>
                 <button class="btn btn-danger" data-dismiss="modal" id="hintHelpMax-btn-cancel"><%=i18n.common.cancel%></button>
             </div>
@@ -19,9 +19,23 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-body" id="lastHintHelpMaxContent" style="text-align: center;">
-                <p style="text-align: center;"><%=i18n.escapeRoom.play.giveLastHintAutomaticHelpTextMax%></p>
+                <p style="text-align: center;"><%=i18n.escapeRoom.play.giveLastHintAutHelpTextMax%></p>
                 <button class="btn btn-success" id="lastHintHelpMax-btn-accept"><%=i18n.common.accept%></button>
                 <button class="btn btn-danger" data-dismiss="modal" id="lastHintHelpMax-btn-cancel"><%=i18n.common.cancel%></button>
+            </div>
+        </div>
+    </div>
+</div>
+<%} else if (escapeRoom.autHelpOptionsMaxDuration === "giveSolution"){%>
+<div class="modal" data-backdrop="static" tabindex="-1" role="dialog" id="solutionHelpMax" aria-hidden="true">
+    <div class="modal-backdrop" style="opacity: 0.6; z-index:0;"></div>
+
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body" id="solutionHelpMaxContent" style="text-align: center;">
+                <p style="text-align: center;"><%=i18n.escapeRoom.play.giveSolutionAutHelpTextMax%></p>
+                <button class="btn btn-success" id="solutionHelpMax-btn-accept"><%=i18n.common.accept%></button>
+                <button class="btn btn-danger" data-dismiss="modal" id="solutionHelpMax-btn-cancel"><%=i18n.common.cancel%></button>
             </div>
         </div>
     </div>

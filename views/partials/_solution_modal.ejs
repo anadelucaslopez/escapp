@@ -1,0 +1,49 @@
+<div class="modal animated zoomIn" tabindex="-1" role="dialog" id="solutionModal" data-backdrop="static" aria-labelledby="solutionModal" aria-hidden="true">
+    <div class="modal-dialog modal-xl " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-title">
+                    <%=i18n.escapeRoom.play.Info%>
+                </h5>
+                <button type="button" class="close" id="close-solution-modal" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalContent">
+                <div class="hints-modal-no-left">
+                </div>
+                <div class="hints-modal-main-content">
+                    <h6 id="last-hint-title" >
+                        <%=i18n.escapeRoom.play.solution%>
+                    </h6>
+                    <ul class="cardList hintList">
+                        <% for (var p = escapeRoom.puzzles.length -1; p>=0; p--) { %>
+                            <% var order = escapeRoom.puzzles[p].order%>
+                            <% var isCurrent = currentlyWorkingOn === order;%>
+
+                            <% var show = (pending.indexOf(order) === -1 || currentlyWorkingOn === order);%>
+                            <li class="card reto-hint-li reto-hint-title-<%=order%> <%=isCurrent ? 'reto-hint-current' : ''%>"
+                                style="<%=(show) ? '':'display: none;'%>"
+                                data-puzzle-number="<%=order%>">
+
+                                <h6 class="reto-title">
+                                    <span class="current-pths"><b><%=i18n.puzzle.Puzzle%> <%=order+1%></b></span>
+                                    <span class="puzzle-title-no-current"><b><%=escapeRoom.puzzles[p].title%></b> </span>
+                                    <span class="current-pths"> (<%=i18n.escapeRoom.play.currentPuzzle%>) </span>
+                                    </span>
+                                </h6>
+                                <div class="card-text">
+                                    <p> <b><%=i18n.escapeRoom.play.sol%>:</b> <%=escapeRoom.puzzles[p].sol%></p>
+                                </div>
+                            </li>
+                        <%}%>
+                    </ul>
+                </div>
+                <div class="hints-modal-cats">
+                </div>
+                <div class="hints-modal-quiz">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
