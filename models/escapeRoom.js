@@ -31,12 +31,12 @@ module.exports = function (sequelize, DataTypes) {
             "autHelpOptionsDuration": {
                 "type": DataTypes.STRING,
                 "allowNull": true,
-                "validate": {"isIn": [["none", "msg", "reqOneHint", "giveNextHint", "giveLastHint"]]}
+                "validate": {"isIn": [["none", "msg", "reqOneHint", "giveNextHint", "giveLastHint", "giveSolution"]]}
             },
             "autHelpOptionsMaxDuration": {
                 "type": DataTypes.STRING,
                 "allowNull": true,
-                "validate": {"isIn": [["none", "msg", "reqOneHint", "giveNextHint", "giveLastHint"]]}
+                "validate": {"isIn": [["none", "msg", "reqOneHint", "giveNextHint", "giveLastHint", "giveSolution"]]}
             },
             "invitation": {
                 "type": DataTypes.STRING
