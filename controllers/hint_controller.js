@@ -87,8 +87,8 @@ exports.pistasUpdate = async (req, res) => {
     escapeRoom.feedback = Boolean(feedback);
     escapeRoom.hintInterval = hintInterval || null;
     escapeRoom.allowCustomHints = Boolean(allowCustomHints);
-    escapeRoom.autHelpOptionsDuration = autHelpOptionsDuration === "none" || autHelpOptionsDuration === "msg" || autHelpOptionsDuration === "reqOneHint" || autHelpOptionsDuration === "giveNextHint" || autHelpOptionsDuration === "giveLastHint" ? autHelpOptionsDuration : null;
-    escapeRoom.autHelpOptionsMaxDuration = autHelpOptionsMaxDuration === "none" || autHelpOptionsMaxDuration === "msg" || autHelpOptionsMaxDuration === "reqOneHint" || autHelpOptionsMaxDuration === "giveNextHint" || autHelpOptionsMaxDuration === "giveLastHint" ? autHelpOptionsMaxDuration : null;
+    escapeRoom.autHelpOptionsDuration = autHelpOptionsDuration === "none" || autHelpOptionsDuration === "msg" || autHelpOptionsDuration === "reqOneHint" || autHelpOptionsDuration === "giveNextHint" || autHelpOptionsDuration === "giveLastHint" || autHelpOptionsDuration === "giveSolution" ? autHelpOptionsDuration : null;
+    escapeRoom.autHelpOptionsMaxDuration = autHelpOptionsMaxDuration === "none" || autHelpOptionsMaxDuration === "msg" || autHelpOptionsMaxDuration === "reqOneHint" || autHelpOptionsMaxDuration === "giveNextHint" || autHelpOptionsMaxDuration === "giveLastHint" || autHelpOptionsMaxDuration === "giveSolution" ? autHelpOptionsMaxDuration : null;
     const back = `/escapeRooms/${escapeRoom.id}/${isPrevious ? prevStep("hints") : progressBar || nextStep("hints")}`;
 
     try {

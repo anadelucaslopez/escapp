@@ -122,8 +122,8 @@ exports.create = async (req, res) => {
     const {i18n} = res.locals;
 
     escapeRoom.forceLang = forceLang === "en" || forceLang === "es" ? forceLang : null;
-    escapeRoom.autHelpOptionsDuration = autHelpOptionsDuration === "none" || autHelpOptionsDuration === "msg" || autHelpOptionsDuration === "reqOneHint" || autHelpOptionsDuration === "giveNextHint" || autHelpOptionsDuration === "giveLastHint" ? autHelpOptionsDuration : null;
-    escapeRoom.autHelpOptionsMaxDuration = autHelpOptionsMaxDuration === "none" || autHelpOptionsMaxDuration === "msg" || autHelpOptionsMaxDuration === "reqOneHint" || autHelpOptionsMaxDuration === "giveNextHint" || autHelpOptionsMaxDuration === "giveLastHint" ? autHelpOptionsMaxDuration : null;
+    escapeRoom.autHelpOptionsDuration = autHelpOptionsDuration === "none" || autHelpOptionsDuration === "msg" || autHelpOptionsDuration === "reqOneHint" || autHelpOptionsDuration === "giveNextHint" || autHelpOptionsDuration === "giveLastHint" || autHelpOptionsDuration === "giveSolution" ? autHelpOptionsDuration : null;
+    escapeRoom.autHelpOptionsMaxDuration = autHelpOptionsMaxDuration === "none" || autHelpOptionsMaxDuration === "msg" || autHelpOptionsMaxDuration === "reqOneHint" || autHelpOptionsMaxDuration === "giveNextHint" || autHelpOptionsMaxDuration === "giveLastHint" || autHelpOptionsMaxDuration === "giveSolution" ? autHelpOptionsMaxDuration : null;
 
     try {
         const er = await escapeRoom.save({"fields": ["title", "teacher", "subject", "duration", "description", "forbiddenLateSubmissions", "scope", "teamSize", "autHelpOptionsDuration", "autHelpOptionsMaxDuration", "authorId", "supportLink", "invitation", "forceLang"]});
@@ -195,8 +195,8 @@ exports.update = async (req, res) => {
     escapeRoom.invitation = body.invitation !== undefined ? body.invitation.toString() : undefined;
     escapeRoom.scope = body.scope === "private";
     escapeRoom.teamSize = body.teamSize || 0;
-    escapeRoom.autHelpOptionsDuration = body.autHelpOptionsDuration === "none" || body.autHelpOptionsDuration === "msg" || body.autHelpOptionsDuration === "reqOneHint" || body.autHelpOptionsDuration === "giveNextHint" || body.autHelpOptionsDuration === "giveLastHint" ? body.autHelpOptionsDuration : null;
-    escapeRoom.autHelpOptionsMaxDuration = body.autHelpOptionsMaxDuration === "none" || body.autHelpOptionsMaxDuration === "msg" || body.autHelpOptionsMaxDuration === "reqOneHint" || body.autHelpOptionsMaxDuration === "giveNextHint" || body.autHelpOptionsMaxDuration === "giveLastHint" ? body.autHelpOptionsMaxDuration : null;
+    escapeRoom.autHelpOptionsDuration = body.autHelpOptionsDuration === "none" || body.autHelpOptionsDuration === "msg" || body.autHelpOptionsDuration === "reqOneHint" || body.autHelpOptionsDuration === "giveNextHint" || body.autHelpOptionsDuration === "giveLastHint" || body.autHelpOptionsDuration === "giveSolution" ? body.autHelpOptionsDuration : null;
+    escapeRoom.autHelpOptionsMaxDuration = body.autHelpOptionsMaxDuration === "none" || body.autHelpOptionsMaxDuration === "msg" || body.autHelpOptionsMaxDuration === "reqOneHint" || body.autHelpOptionsMaxDuration === "giveNextHint" || body.autHelpOptionsMaxDuration === "giveLastHint" || body.autHelpOptionsMaxDuration === "giveSolution" ? body.autHelpOptionsMaxDuration : null;
     escapeRoom.forceLang = body.forceLang === "en" || body.forceLang === "es" ? body.forceLang : null;
     const progressBar = body.progress;
 
