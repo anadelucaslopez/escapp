@@ -17,15 +17,10 @@ exports.startAutomaticHelpOneTeam = async (team, puzzles, escapeRoom) => {
             // Switch case con las opciones de ayuda excepto si lo escribe el profe, el resto con i18n
             switch (escapeRoom.autHelpOptionsDuration) {
             case "msg":
-                sendTeamMessage(helpStrategyDuration, team.id);
-                break;
             case "reqOneHint":
-                sendTeamMessage(helpStrategyDuration, team.id);
-                break;
             case "giveNextHint":
-                sendTeamMessage(helpStrategyDuration, team.id);
-                break;
             case "giveLastHint":
+            case "giveSolution":
                 sendTeamMessage(helpStrategyDuration, team.id);
                 break;
             case "none":
@@ -37,15 +32,10 @@ exports.startAutomaticHelpOneTeam = async (team, puzzles, escapeRoom) => {
             // Switch case con las opciones de ayuda excepto si lo escribe el profe, el resto con i18n
             switch (escapeRoom.autHelpOptionsMaxDuration) {
             case "msg":
-                sendTeamMessage(helpStrategyMaxDuration, team.id);
-                break;
             case "reqOneHint":
-                sendTeamMessage(helpStrategyMaxDuration, team.id);
-                break;
             case "giveNextHint":
-                sendTeamMessage(helpStrategyMaxDuration, team.id);
-                break;
             case "giveLastHint":
+            case "giveSolution":
                 sendTeamMessage(helpStrategyMaxDuration, team.id);
                 break;
             case "none":
