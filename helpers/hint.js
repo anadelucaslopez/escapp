@@ -88,9 +88,9 @@ exports.calculateNextHint = async (escapeRoom, team, status, score, category, me
                     currentHint = hIndex;
                 }
             }
-            if (escapeRoom.autHelpOptionsDuration === "giveLastHint" && timeElapsed >= currentPuzzle.duration * 60000 && timeElapsed <= currentPuzzle.duration * 60000 + 11000) {
+            if (escapeRoom.autHelpOptionsDuration === "giveLastHint" && timeElapsed >= currentPuzzle.duration * 60000 && timeElapsed <= currentPuzzle.duration * 60000 + 13000) {
                 currentHint = allHintsIndexes.length - 1;
-            } else if (escapeRoom.autHelpOptionsMaxDuration === "giveLastHint" && timeElapsed >= currentPuzzle.maxDuration * 60000 && timeElapsed <= currentPuzzle.maxDuration * 60000 + 11000) {
+            } else if (escapeRoom.autHelpOptionsMaxDuration === "giveLastHint" && timeElapsed >= currentPuzzle.maxDuration * 60000 && timeElapsed <= currentPuzzle.maxDuration * 60000 + 13000) {
                 currentHint = allHintsIndexes.length - 1;
             } else {
                 currentHint++;
