@@ -115,7 +115,7 @@ exports.new = (_req, res) => {
 
 // POST /escapeRooms/create
 exports.create = async (req, res) => {
-    const {title, subject, duration, forbiddenLateSubmissions, description, scope, teamSize, autHelpOptionsDuration, autHelpOptionsMaxDuration,supportLink, forceLang, invitation} = req.body,
+    const {title, subject, duration, forbiddenLateSubmissions, description, scope, teamSize, autHelpOptionsDuration, autHelpOptionsMaxDuration, supportLink, forceLang, invitation} = req.body,
         authorId = req.session.user && req.session.user.id || 0;
 
     const escapeRoom = models.escapeRoom.build({title, subject, duration, "forbiddenLateSubmissions": forbiddenLateSubmissions === "on", invitation, description, supportLink, "scope": scope === "private", "teamSize": teamSize || 0, autHelpOptionsDuration, autHelpOptionsMaxDuration, authorId, forceLang}); // Saves only the fields question and answer into the DDBB

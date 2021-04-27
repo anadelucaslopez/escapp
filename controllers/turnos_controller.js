@@ -4,7 +4,8 @@ const {Op} = Sequelize;
 const {models} = sequelize;
 const {nextStep, prevStep} = require("../helpers/progress");
 const {startTurno, stopTurno} = require("../helpers/sockets");
-const {validationError, isValidDate} = require("../helpers/utils");
+const {validationError, isValidDate, getERPuzzles} = require("../helpers/utils");
+const {startAutomaticHelp} = require("../helpers/automaticHelp");
 
 
 // Autoload the turn with id equals to :turnId
@@ -97,6 +98,8 @@ exports.activate = async (req, res, next) => {
     const {escapeRoom, body} = req;
     const back = `/escapeRooms/${escapeRoom.id}`;
     const {i18n} = res.locals;
+    // Para automatic help
+    const puzzles = await getERPuzzles(req.escapeRoom.id);
 
     try {
         const turno = await models.turno.findByPk(body.turnSelected);
@@ -112,9 +115,10 @@ exports.activate = async (req, res, next) => {
         req.flash("success", turno.status === "active" ? i18n.turno.activated : i18n.turno.deactivated);
         if (turno.status === "active") {
             startTurno(turno.id);
-            // llamar funcion
-            // console.log("ANTESSS DEL TIMEOUT");
-            // setTimeout(() => exports.startAutomaticHelpShift(team, puzzles, escapeRoom), 15000);
+            // Llamar a ayuda automatica si esta activada para el turno
+            if (turno.allowAutomaticHelp) { // Turno sincrono
+                startAutomaticHelp(null, puzzles, req.escapeRoom, turno);
+            }
             res.redirect(`/escapeRooms/${escapeRoom.id}/turnos/${turno.id}/play`);
         } else {
             stopTurno(turno.id);

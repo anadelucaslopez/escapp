@@ -98,12 +98,11 @@ exports.startPlaying = async (req, res, next) => {
 
             sendStartTeam(joinTeam.id, "OK", true, "PARTICIPANT", i18n.escapeRoom.api.participationStart.PARTICIPANT, erState);
             sendJoinTeam(joinTeam.id, joinTeam.turno.id, erState.ranking);
-            // Llamo a la ayuda auto team y puzzles
-            console.log("JUGANDOOO");
-            const turno = await models.turno.findOne({"where": {"id": joinTeam.turno.id, "escapeRoomId": req.escapeRoom.id}, "attributes": ["allowAutomaticHelp", "date"]});
+            // Llamo a la ayuda automatica
+            const turno = await models.turno.findOne({"where": {"id": joinTeam.turno.id, "escapeRoomId": req.escapeRoom.id}, "attributes": ["id", "allowAutomaticHelp", "date"]});
 
             if (turno.date === null && turno.allowAutomaticHelp) { // Si el turno es autonomo (asincrono)
-                startAutomaticHelpOneTeam(team, puzzles, req.escapeRoom);
+                startAutomaticHelpOneTeam(team, puzzles, req.escapeRoom, turno);
             }
         }
     } catch (err) {
