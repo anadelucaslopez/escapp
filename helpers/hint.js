@@ -30,6 +30,8 @@ exports.calculateNextHint = async (escapeRoom, team, status, score, category, me
                 ],
                 "order": [["createdAt", "ASC"]]
             });
+            // Para calcular la ultima pista en el momento adecuado
+            const {timeElapsed, retosSuperados} = await getCurrentPuzzleAndCurrentTime(team, escapeRoom.puzzles);
             const currentPuzzle = escapeRoom.puzzles.find((p) => p.order === currentlyWorkingOn);
 
             if (escapeRoom.hintLimit !== undefined && escapeRoom.hintLimit !== null && hints.length >= escapeRoom.hintLimit) {

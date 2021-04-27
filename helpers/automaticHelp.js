@@ -1,8 +1,28 @@
 const {getCurrentPuzzleAndCurrentTime} = require("./utils");
 const {sendTeamMessage} = require("./sockets");
 const {NEED_HELP, NEED_HELP_MAX} = require("./apiCodes");
+const sequelize = require("../models");
+const {models} = sequelize;
+const queries = require("../queries");
 
-exports.startAutomaticHelpOneTeam = async (team, puzzles, escapeRoom) => {
+exports.startAutomaticHelp = async (team, puzzles, escapeRoom, turno) => {
+    if (turno.allowAutomaticHelp && turno.status === "active") {
+        console.log("SINCRONOOO");
+        const teamsPlaying = await models.team.findAll(queries.team.rankingShort(escapeRoom.id, turno.id));
+        // Para poder parar el timeout cuando el turno de pare
+        const turnoReload = await models.turno.findOne({"where": {"id": turno.id, "escapeRoomId": escapeRoom.id}, "attributes": ["id", "allowAutomaticHelp", "date", "status"]});
+
+        for (const t in teamsPlaying) {
+            // eslint-disable-next-line no-await-in-loop
+            await exports.startAutomaticHelpOneTeam(teamsPlaying[t], puzzles, escapeRoom, turnoReload);
+        }
+        // Si no le ha dado al boton stop se sigue haciendo el tiemout que se activa al pulsar el boton play
+        console.log("ANTESSS DEL TIMEOUT SINCRONO");
+        setTimeout(() => exports.startAutomaticHelp(team, puzzles, escapeRoom, turnoReload), 15000);
+    }
+};
+
+exports.startAutomaticHelpOneTeam = async (team, puzzles, escapeRoom, turno) => {
     console.log("ESTA ENTRANDO EN LA FUNC");
 
     const {currentPuzzle, timeElapsed, retosSuperados} = await getCurrentPuzzleAndCurrentTime(team, puzzles);
@@ -43,12 +63,10 @@ exports.startAutomaticHelpOneTeam = async (team, puzzles, escapeRoom) => {
                 break;
             }
         }
-        console.log("ANTESSS DEL TIMEOUT");
-        setTimeout(() => exports.startAutomaticHelpOneTeam(team, puzzles, escapeRoom), 15000);
+        if (turno.date === null) {
+            console.log("ANTESSS DEL TIMEOUT ASINCRONO");
+            setTimeout(() => exports.startAutomaticHelpOneTeam(team, puzzles, escapeRoom, turno), 15000);
+        }
     }
-};
-
-exports.startAutomaticHelpShift = async (team, puzzles, escapeRoom) => {
-   console.log("Hola");
 };
 
