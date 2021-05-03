@@ -55,14 +55,14 @@
     <% content = getContentForPuzzle(escapeRoom[endPoint + "Instructions"], currentlyWorkingOn === null ? "all": currentlyWorkingOn)%>
 <% } %>
 
-<% var puzzles = escapeRoom.puzzles.map(({ id, order, title, score, correct, automatic, hints })=>{
+<% var puzzles = escapeRoom.puzzles.map(({ id, order, title, sol, score, correct, automatic, hints })=>{
     reqHints[order] = [];
     var noSuperado = retosSuperados.indexOf(order) === -1;
     if (noSuperado) {
         pending.push(order)
     }
     const categories = Array.from(new Set(hints.map(h=>h.category)));
-    return { id, title, order, score, correct, automatic, categories, hints: hints.reduce((a,b) => {
+    return { id, title, order, sol, score, correct, automatic, categories, hints: hints.reduce((a,b) => {
             if (reqHintsList.indexOf(b.id) === -1){
                 if ( a[b.category]) {
                     a[b.category].push(b.order)
@@ -296,5 +296,6 @@ if (!finish && pending.length && currentlyWorkingOn >= puzzles.length) {
 <%- include("../../partials/_autoplay") %>
 <%- include("../../partials/_giveHintAutomaticHelp") %>
 <%- include("../../partials/_giveHintAutomaticHelpMax") %>
+<%- include("../../partials/_giveSolAutPuzzleAutHelp") %>
 </body>
 </html>
