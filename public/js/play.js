@@ -101,6 +101,10 @@ const solvePuzzle = (puzzleOrder, sol) => socket.emit("SOLVE_PUZZLE", {"puzzleOr
 
 const requestHint = (score, status, category) => socket.emit("REQUEST_HINT", {score, status, category});
 
+const helpAcceptedOrCanceled = (erDuration, helpStrategy) => socket.emit("POP_UP_HELP", {erDuration, helpStrategy});
+
+const showSolution = () => socket.emit("SHOW_SOLUTION");
+
 /** INCOMING MESSAGES **/
 const onConnect = () => {
   console.info("Connected");
@@ -291,6 +295,7 @@ const onLeave = ({username, teamId, ranking}) => {
 
 const onNeedHelp = ({helpStrategyDuration}) => {
   const hintsAvailable = checkAvailHintsForPuzzle(ER.erState.currentlyWorkingOn);
+  const puzzle = ER.info.escapeRoomPuzzles[ER.erState.currentlyWorkingOn];
   switch (helpStrategyDuration) {
   case "msg":
     createAlert("warning", i18n.msgSlow, false);
@@ -299,7 +304,7 @@ const onNeedHelp = ({helpStrategyDuration}) => {
     createAlert("warning", i18n.msgSlowReqHint, false);
     break;
   case "giveNextHint":
-    if (hintsAvailable){
+    if (hintsAvailable) {
       $('#hintHelp').show({"backdrop": true});
     }
     break;
@@ -309,7 +314,12 @@ const onNeedHelp = ({helpStrategyDuration}) => {
     }
     break;
   case "giveSolution":
-    $('#solutionHelp').show({"backdrop": true});
+    if (puzzle.automatic) {
+      $('#solutionHelpAutPuzzle').show({"backdrop": true});
+    } else {
+      $('#solutionHelpAutPuzzle').hide();
+      $('#solutionHelp').show({"backdrop": true});
+    }
     break;
   case "none":
   default:
@@ -319,6 +329,7 @@ const onNeedHelp = ({helpStrategyDuration}) => {
 
 const onNeedHelpMax = ({helpStrategyMaxDuration}) => {
   const hintsAvailable = checkAvailHintsForPuzzle(ER.erState.currentlyWorkingOn);
+  const puzzle = ER.info.escapeRoomPuzzles[ER.erState.currentlyWorkingOn];
   switch (helpStrategyMaxDuration) {
   case "msg":
     createAlert("danger", i18n.msgSlowMax, false);
@@ -327,7 +338,7 @@ const onNeedHelpMax = ({helpStrategyMaxDuration}) => {
     createAlert("danger", i18n.msgSlowReqHintMax, false);
     break;
   case "giveNextHint":
-    if (hintsAvailable){
+    if (hintsAvailable) {
       $('#hintHelpMax').show({"backdrop": true});
     }
     break;
@@ -337,12 +348,57 @@ const onNeedHelpMax = ({helpStrategyMaxDuration}) => {
     }
     break;
   case "giveSolution":
-    $('#solutionHelpMax').show({"backdrop": true});
+    if (puzzle.automatic) {
+      $('#solutionHelpMaxAutPuzzle').show({"backdrop": true});
+    } else {
+      $('#solutionHelpMax').show({"backdrop": true});
+    }
     break;
   case "none":
   default:
     break;
   }
+}
+
+const onPopUpClose = ({erDuration, helpStrategy}) => {
+  const puzzle = ER.info.escapeRoomPuzzles[ER.erState.currentlyWorkingOn];
+  switch (helpStrategy) {
+  case "giveNextHint":
+    if (erDuration === "duration") {
+      $('#hintHelp').hide();
+    } else if (erDuration === "maxDuration") {
+      $('#hintHelpMax').hide();
+    }
+    break;
+  case "giveLastHint":
+    if (erDuration === "duration") {
+      $('#lastHintHelp').hide();
+    } else if (erDuration === "maxDuration") {
+      $('#lastHintHelpMax').hide();
+    }
+    break;
+  case "giveSolution":
+    if (puzzle.automatic) {
+      if (erDuration === "duration") {
+        $('#solutionHelpAutPuzzle').hide();
+      } else if (erDuration === "maxDuration") {
+        $('#solutionHelpMaxAutPuzzle').hide();
+      }
+    } else {
+      if (erDuration === "duration") {
+        $('#solutionHelp').hide();
+      } else if (erDuration === "maxDuration") {
+        $('#solutionHelpMax').hide();
+      }
+    }
+    break;
+  default:
+    break;
+  }
+}
+const onShowSolutionTeam = () => {
+  const puzzle = ER.info.escapeRoomPuzzles[ER.erState.currentlyWorkingOn];
+  createAlert("success", `<b>${i18n.solutionMsg}</b><br/>${puzzle.sol}`);
 }
 
 /** HELPERS **/
@@ -872,6 +928,12 @@ const initSocketServer = (escapeRoomId, teamId, turnId, username) => {
   /*Team needs help max duration*/
   socket.on("NEED_HELP_MAX", onNeedHelpMax);
 
+  /*Close help modal when someone in the team has already accepted or canceled the help*/
+  socket.on("HELP_POPUP_CLOSE", onPopUpClose);
+
+  /*Show message with solution to all the team*/
+  socket.on("SHOW_SOLUTION_TEAM", onShowSolutionTeam);
+
 };
 let showModT = false;
 let showNavT = false;
@@ -920,21 +982,27 @@ $( ()=>{
     $('#hintModal').modal("show");
   });
 
+  /** ------------------GIVE NEXT HINT ---------------------- **/
+  /** ---- Duration ---- **/
+
   /** _giveAutomaticHelp.ejs giveNextHint - accept button and cancel button **/
   $(document).on("click", "#hintHelp-btn-accept", function(){
-    $('#hintHelp').hide();
-    hintReq();
-    $('.btn-reqHint-Modal').hide();
-    $('#hintModal').modal("show");
+      helpAcceptedOrCanceled("duration", "giveNextHint");
+      hintReq();
+      /** hide request hint button in modal **/
+      $('.btn-reqHint-Modal').hide();
+      $('#hintModal').modal("show");
   });
 
   $(document).on("click", "#hintHelp-btn-cancel", function(){
-    $('#hintHelp').hide();
+    helpAcceptedOrCanceled("duration", "giveNextHint");
   });
+
+  /** ---- MAX Duration ---- **/
 
   /** _giveAutomaticHelpMax.ejs giveNextHint - accept button and cancel button **/
   $(document).on("click", "#hintHelpMax-btn-accept", function(){
-    $('#hintHelpMax').hide();
+    helpAcceptedOrCanceled("maxDuration", "giveNextHint");
     hintReq();
     /** hide request hint button in modal **/
     $('.btn-reqHint-Modal').hide();
@@ -942,34 +1010,40 @@ $( ()=>{
   });
 
   $(document).on("click", "#hintHelpMax-btn-cancel", function(){
+    helpAcceptedOrCanceled("maxDuration", "giveNextHint");
     $('#hintHelpMax').hide();
   });
 
+  /** show request hint button in modal **/
   $(document).on("click", "#close-hint-modal", function(){
-    /** show request hint button in modal **/
     $('.btn-reqHint-Modal').show();
   });
 
+  /** ------------------GIVE LAST HINT ---------------------- **/
+  /** ---- Duration ---- **/
+
   /** _giveAutomaticHelp.ejs giveLastHint - accept button and cancel button **/
   $(document).on("click", "#lastHintHelp-btn-accept", function(){
-    $('#lastHintHelp').hide();
+    helpAcceptedOrCanceled("duration", "giveLastHint");
     hintReq();
     $('#lastHintModal').modal("show");
   });
 
   $(document).on("click", "#lastHintHelp-btn-cancel", function(){
-    $('#lastHintHelp').hide();
+    helpAcceptedOrCanceled("duration", "giveLastHint");
   });
+
+  /** ---- MAX Duration ---- **/
 
   /** _giveAutomaticHelpMax.ejs giveLastHint - accept button and cancel button **/
   $(document).on("click", "#lastHintHelpMax-btn-accept", function(){
-    $('#lastHintHelpMax').hide();
+    helpAcceptedOrCanceled("maxDuration", "giveLastHint");
     hintReq();
     $('#lastHintModal').modal("show");
   });
 
   $(document).on("click", "#lastHintHelpMax-btn-cancel", function(){
-    $('#lastHintHelpMax').hide();
+    helpAcceptedOrCanceled("maxDuration", "giveLastHint");
   });
 
   /** disable request hint when lastHint is accepted **/
@@ -977,31 +1051,66 @@ $( ()=>{
     $('#btn-reqHint').attr("disabled", true);
   });
 
+  /** ------------------GIVE SOLUTION ---------------------- **/
+  /** ---- Duration ---- **/
+
   /** _giveAutomaticHelp.ejs giveSolution - accept button and cancel button **/
   $(document).on("click", "#solutionHelp-btn-accept", function(){
-    $('#solutionHelp').hide();
+    helpAcceptedOrCanceled("duration", "giveSolution");
     $('#solutionModal').modal("show");
+    showSolution();
   });
 
   $(document).on("click", "#solutionHelp-btn-cancel", function(){
-    $('#solutionHelp').hide();
+    helpAcceptedOrCanceled("duration", "giveSolution");
   });
+
+  /** ---- MAX Duration ---- **/
 
   /** _giveAutomaticHelpMax.ejs giveSolution - accept button and cancel button **/
   $(document).on("click", "#solutionHelpMax-btn-accept", function(){
-    $('#solutionHelpMax').hide();
+    helpAcceptedOrCanceled("maxDuration", "giveSolution");
     $('#solutionModal').modal("show");
+    showSolution();
   });
 
   $(document).on("click", "#solutionHelpMax-btn-cancel", function(){
-    $('#solutionHelpMax').hide();
+    helpAcceptedOrCanceled("maxDuration", "giveSolution");
   });
 
-  /** disable request hint when lastHint is accepted **/
+  /** disable request hint when solution is accepted **/
   $(document).on("click", "#close-solution-modal", function(){
     $('#btn-reqHint').attr("disabled", true);
   });
 
+  /** ------------------GIVE SOLUTION AUT PUZZLE ---------------------- **/
+  /** ---- Duration ---- **/
+
+  /** _giveSolAutPuzzleAutHelp.ejs giveSolution - accept button and cancel button **/
+  $(document).on("click", "#solutionHelpAutPuzzle-btn-accept", function(){
+    helpAcceptedOrCanceled("duration", "giveSolution");
+    const puzzle = ER.info.escapeRoomPuzzles[ER.erState.currentlyWorkingOn];
+    solvePuzzle(puzzle.order, puzzle.sol);
+  });
+
+  $(document).on("click", "#solutionHelpAutPuzzle-btn-cancel", function(){
+    helpAcceptedOrCanceled("duration", "giveSolution");
+  });
+
+  /** ---- MAX Duration ---- **/
+
+  /** _giveSolAutPuzzleAutHelp.ejs giveSolution - accept button and cancel button **/
+  $(document).on("click", "#solutionHelpMaxAutPuzzle-btn-accept", function(){
+    helpAcceptedOrCanceled("maxDuration", "giveSolution");
+    const puzzle = ER.info.escapeRoomPuzzles[ER.erState.currentlyWorkingOn];
+    solvePuzzle(puzzle.order, puzzle.sol);
+  });
+
+  $(document).on("click", "#solutionHelpMaxAutPuzzle-btn-cancel", function(){
+    helpAcceptedOrCanceled("maxDuration", "giveSolution");
+  });
+
+  /** ---------------------------------------- **/
 
   $(document).on("click", ".btn-hints-modal", function(){
     hintReq();
