@@ -1,0 +1,29 @@
+<% if (escapeRoom.autHelpOptionsDuration === "giveSolution"){%>
+<div class="modal" data-backdrop="static" tabindex="-1" role="dialog" id="solutionHelpAutPuzzle" aria-hidden="true">
+    <div class="modal-backdrop" style="opacity: 0.6; z-index:0;"></div>
+
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body" id="solutionHelpAutPuzzleContent" style="text-align: center;">
+                <p style="text-align: center;"><%=i18n.escapeRoom.play.giveSolutionAutPuzzleHelpText%></p>
+                <button class="btn btn-success" id="solutionHelpAutPuzzle-btn-accept"><%=i18n.common.accept%></button>
+                <button class="btn btn-danger" data-dismiss="modal" id="solutionHelpAutPuzzle-btn-cancel"><%=i18n.common.cancel%></button>
+            </div>
+        </div>
+    </div>
+</div>
+<%} else if (escapeRoom.autHelpOptionsMaxDuration === "giveSolution") {%>
+<div class="modal" data-backdrop="static" tabindex="-1" role="dialog" id="solutionHelpMaxAutPuzzle" aria-hidden="true">
+    <div class="modal-backdrop" style="opacity: 0.6; z-index:0;"></div>
+
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body" id="solutionHelpMaxAutPuzzleContent" style="text-align: center;">
+                <p style="text-align: center;"><%=i18n.escapeRoom.play.giveSolutionAutPuzzleHelpTextMax%></p>
+                <button class="btn btn-success" id="solutionHelpMaxAutPuzzle-btn-accept"><%=i18n.common.accept%></button>
+                <button class="btn btn-danger" data-dismiss="modal" id="solutionHelpMaxAutPuzzle-btn-cancel"><%=i18n.common.cancel%></button>
+            </div>
+        </div>
+    </div>
+</div>
+<%}%>
