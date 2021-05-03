@@ -335,11 +335,14 @@
             "giveHintAutHelpText": "Has superado la duración estimada del reto. ¿Quieres una pista?",
             "giveLastHintAutHelpText": "Has superado la duración estimada del reto. ¿Quieres la última pista?",
             "giveSolutionAutHelpText": "Has superado la duración estimada del reto. ¿Quieres la solución del reto?",
+            "giveSolutionAutPuzzleHelpText": "Has superado la duración estimada del reto. ¿Quieres la solución del reto? Si aceptas el reto será resuelto y pasarás al siguiente.",
             "giveHintAutHelpTextMax": "Has superado la duración máxima del reto. ¿Quieres una pista?",
             "giveLastHintAutHelpTextMax": "Has superado la duración máxima del reto. ¿Quieres la última pista?",
             "giveSolutionAutHelpTextMax": "Has superado la duración máxima del reto. ¿Quieres la solución del reto?",
+            "giveSolutionAutPuzzleHelpTextMax": "Has superado la duración máxima del reto. ¿Quieres la solución del reto? Si aceptas el reto será resuelto y pasarás al siguiente.",
             "lastHint": "Última pista del reto",
-            "solution": "Solución del reto"
+            "solution": "Solución del reto",
+            "solutionMsg": "Solución"
         },
         "invitation": {
             "no": "no",

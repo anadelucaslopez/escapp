@@ -340,11 +340,14 @@
             "giveHintAutHelpText": "You have exceeded the estimated duration of the puzzle. Do you want a hint?",
             "giveLastHintAutHelpText": "You have exceeded the estimated duration of the puzzle. Do you want the last hint?",
             "giveSolutionAutHelpText": "You have exceeded the estimated duration of the puzzle. Do you want the solution of the puzzle?",
+            "giveSolutionAutPuzzleHelpText": "You have exceeded the estimated duration of the puzzle. Do you want the solution of the puzzle? If you accept it the puzzle will be solved and you will pass to the next one.",
             "giveHintAutHelpTextMax": "You have exceeded the maximum duration of the puzzle. Do you want a hint?",
             "giveLastHintAutHelpTextMax": "You have exceeded the maximum duration of the puzzle. Do you want the last hint?",
             "giveSolutionAutHelpTextMax": "You have exceeded the maximum duration of the puzzle. Do you want the solution of the puzzle?",
+            "giveSolutionAutPuzzleHelpTextMax": "You have exceeded the maximum duration of the puzzle. Do you want the solution of the puzzle? If you accept it the puzzle will be solved and you will pass to the next one.",
             "lastHint": "Last hint of the puzzle",
-            "solution": "Solution of the puzzle"
+            "solution": "Solution of the puzzle",
+            "solutionMsg": "Solution"
         },
         "fields": {
 
