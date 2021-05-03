@@ -48,7 +48,6 @@ const startTeam = (teamId, code, authentication, participation, msg, erState) =>
 };
 // Response to team hint request
 const hintResponse = (teamId, code, authentication, participation, hintOrder, puzzleOrder, category, msg) => sendTeamMessage({"type": HINT_RESPONSE, "payload": {code, authentication, participation, hintOrder, puzzleOrder, category, msg}}, teamId);
-
 // Response to puzzle solving attempt
 const puzzleResponse = (teamId, code, correctAnswer, solution, puzzleOrder, participation, authentication, erState, msg, participantMessage, content) => sendTeamMessage({"type": PUZZLE_RESPONSE, "payload": {code, correctAnswer, solution, puzzleOrder, participation, authentication, erState, msg, participantMessage, content}}, teamId);
 // Announce that a team member has joined the room
